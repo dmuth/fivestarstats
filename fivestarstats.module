@@ -55,11 +55,11 @@ function fivestarstats_main() {
 	include("get_total_stats.inc.php");
 	//$data["total"] = fivestarstats_get_total_stats();
 
-	include("get_user_stats.inc.php");
-	$data["users"] = fivestarstats_get_user_stats($num);
-
 	include("get_ips.inc.php");
 	//$data["ips"] = fivestarstats_get_ips($num);
+
+	include("get_user_stats.inc.php");
+	$data["users"] = fivestarstats_get_user_stats($num);
 
 	//$retval .= t("<b>Total Votes:</b> %num_votes from %num_ips unique IPs "
 	//	. "with average of %num_stars stars.",

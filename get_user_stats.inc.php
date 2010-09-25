@@ -18,19 +18,32 @@ function fivestarstats_get_user_stats($num) {
 	$retval = array();
 
 	//
+	// For now, this is hard coded.  I'll probably change this later.
+	//
+	$min_votes = 10;
+
+	$retval["top_rated"] = fivestarstats_get_user_stats_top_rated($num, $min_votes);
+/*
+Users:
+- Top-rated users (min 10 votes) $min_votes
+- Lowest rated users (min 10 votes) $min_votes
+- Users with most 1-star votes (for abuse purposes)
+*/
+
+	//
 	// Get top posters. Both nodes AND comments.
 	//
-	$retval = fivestarstats_get_user_stats_top_posters($num);
+/*
+	$retval["top_posters"] = fivestarstats_get_user_stats_top_posters($num);
 
-	foreach ($retval as $key => $value) {
+	foreach ($retval["top_posters"] as $key => $value) {
 
 		$uid = $key;
-
-		$retval[$uid] = fivestarstats_get_user_stats_avg_rating($uid);
-
-		$retval[$uid]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
+		$retval["top_posters"][$uid] = fivestarstats_get_user_stats_avg_rating($uid);
+		$retval["top_posters"][$uid]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
 
 	}
+*/
 
 	return($retval);
 
@@ -168,4 +181,59 @@ function fivestarstats_get_user_stats_ratings($uid) {
 } // End of fivestarstats_get_user_stats_avg_rating()
 
 
+/**
+* Determine our top-rated users with a minimum number of votes.
+*
+* @param integer $num The number of top users we want
+*
+* @param integer $min_votes The minimum number of votes for each user.
+*	This keeps new users with a single vote from being pushed to the
+*	top of the list.
+*
+* @return array An array of top users.
+*/
+function fivestarstats_get_user_stats_top_rated($num, $min_votes) {
+
+	$retval = array();
+
+	$query = "SELECT "
+		. "tbl1.uid, users.name, "
+		. "SUM(value) AS total, COUNT(*) AS num_votes, AVG(value) AS average "
+		. "FROM ("
+			. "SELECT comments.uid AS uid, "
+			. "value "
+			. "FROM votingapi_vote "
+			. "JOIN comments ON comments.cid = content_id "
+			. "WHERE "
+			. "value_type='percent' "
+			. "AND content_type='comment' "
+
+			. "UNION ALL "
+
+			. "SELECT node.uid AS uid, "
+			. "value "
+			. "FROM votingapi_vote "
+			. "JOIN node ON node.nid = content_id "
+			. "WHERE "
+			. "value_type='percent' "
+			. "AND content_type='node' "
+			. ") tbl1 "
+
+		. "JOIN users ON users.uid = tbl1.uid "
+		. "GROUP BY uid "
+		. "HAVING num_votes >= %d "
+		. "ORDER BY average DESC, num_votes DESC "
+		. "LIMIT %d "
+		;
+
+	$query_args = array($min_votes, $num);
+	$cursor = db_query($query, $query_args);
+	while ($row = db_fetch_array($cursor)) {
+		$row["average"] = $row["average"] / 20;
+		$retval[] = $row;
+	}
+
+	return($retval);
+
+} // End of fivestarstats_get_user_stats_top_rated()
 
