@@ -26,32 +26,7 @@ function fivestarstats_get_user_stats($num) {
 
 		$uid = $key;
 
-		//
-		// Get average rating for each user's posts and comments.
-		//
-		$query = ""
-			. "SELECT SUM(cnt) AS cnt, SUM(total) AS total FROM "
-			. "("
-			. "SELECT COUNT(*) AS cnt, SUM(value) AS total FROM votingapi_vote "
-			. "WHERE "
-			. "value_type='percent' "
-			. "AND content_type='node' AND content_id IN "
-				. "(SELECT nid FROM node WHERE uid=%d) "
-			. "UNION "
-			. "SELECT COUNT(*) AS cnt, SUM(value) AS total FROM votingapi_vote "
-			. "WHERE "
-			. "value_type='percent' "
-			. "AND content_type='comment' AND content_id IN "
-				. "(SELECT cid FROM comments WHERE uid=%d) "
-			. ") tbl1 "
-			;
-		$query_args = array($uid, $uid);
-		$cursor = db_query($query, $query_args);
-		$row = db_fetch_array($cursor);
-
-		$retval[$uid]["num_votes"] = $row["cnt"];
-		$retval[$uid]["total"] = $row["total"];
-		$retval[$uid]["average"] = $row["total"] / $row["cnt"] / 20;
+		$retval[$uid] = fivestarstats_get_user_stats_avg_rating($uid);
 
 		//
 		// Get a breakdown of ratings for each user.
@@ -126,3 +101,49 @@ function fivestarstats_get_user_stats_top_posters($num) {
 	return($retval);
 
 } // End of fivestarstats_get_user_stats_top_posters()
+
+
+/**
+* Get the average rating for a specific user's posts/comments.
+*
+* @param integer $uid the User ID we want an average rating for.
+*
+* @return array Associative array of data.
+*/
+function fivestarstats_get_user_stats_avg_rating($uid) {
+
+	$retval = array();
+
+	//
+	// Get average rating for each user's posts and comments.
+	//
+	$query = ""
+		. "SELECT SUM(cnt) AS cnt, SUM(total) AS total FROM "
+		. "("
+		. "SELECT COUNT(*) AS cnt, SUM(value) AS total FROM votingapi_vote "
+		. "WHERE "
+		. "value_type='percent' "
+		. "AND content_type='node' AND content_id IN "
+			. "(SELECT nid FROM node WHERE uid=%d) "
+		. "UNION "
+		. "SELECT COUNT(*) AS cnt, SUM(value) AS total FROM votingapi_vote "
+		. "WHERE "
+		. "value_type='percent' "
+		. "AND content_type='comment' AND content_id IN "
+			. "(SELECT cid FROM comments WHERE uid=%d) "
+		. ") tbl1 "
+		;
+	$query_args = array($uid, $uid);
+	$cursor = db_query($query, $query_args);
+	$row = db_fetch_array($cursor);
+
+	$retval["num_votes"] = $row["cnt"];
+	$retval["total"] = $row["total"];
+	$retval["average"] = $row["total"] / $row["cnt"] / 20;
+
+	return($retval);
+
+} // End of fivestarstats_get_user_stats_avg_rating()
+
+
+
