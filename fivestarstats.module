@@ -1,1 +1,50 @@
 <?php
+
+/**
+* Create our menu.
+*/
+function fivestarstats_menu() {
+
+	$retval = array();
+
+	//
+	// Our main menu item.
+	//
+	$retval["admin/settings/fivestarstats"] = array(
+		"title" => "Fivestar Stats",
+		"page callback" => "fivestarstats_main",
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_NORMAL_ITEM,
+		
+		);
+
+	return($retval);
+
+} // End of fivestarstats_menu()
+
+
+/**
+* Our permissions function.
+* For now, we'll leave this empty.
+*/
+function fivestarstats_perm() {
+	$retval = array();
+	return($retval);
+}
+
+
+/**
+* Our main function.  It returns the various reports.
+*
+* @return string The content of the page
+*/
+function fivestarstats_main() {
+
+	$retval = "";
+
+	return($retval);
+
+} // End of fivestarstats_main()
+
+
+
