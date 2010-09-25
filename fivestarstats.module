@@ -1,4 +1,10 @@
 <?php
+/**
+* Fivestar Stats module.  This is used for determining voting statistics,
+* as well as looking for abuse of the voting system.
+*
+* @author Douglas Muth <http://www.dmuth.org/>
+*/
 
 /**
 * Create our menu.
@@ -91,14 +97,14 @@ X Vote average for each poster
 X number/percentage of 1-star votes for each poster
 
 IPs:
-- Most active IPs
-- Number/percentage of 1-star votes per IP
+X Most active IPs
+X Number/percentage of 1-star votes per IP
+X Highest number of 1-star votes
 
-1-star IPs:
-- Highest number of 1-star votes
-- 1-star vote percentage per IP
-- break down of users voted on by IP, list top users given 1-star ratings
-
+Users:
+- Top-rated users
+- Lowest rated users
+- Users with most 1-star votes (for abuse purposes)
 
 */
 
@@ -264,10 +270,26 @@ function fivestarstats_get_ips($num) {
 
 	$retval = array();
 
-	//
-	// Fetch the top voters
-	//
-	$retval["top_voters"] = array();
+	$retval["top_voters"] = fivestarstats_get_ips_top_voters($num);
+	$retval["top_1_star_voters"] = fivestarstats_get_ips_top_1_star_voters($num);
+	$retval["lowest_vote_average"] = fivestarstats_get_ips_lowest_vote_average($num);
+
+	return($retval);
+
+} // End of fivestarstats_get_ips()
+
+
+/**
+* Get the top voting IPs.
+*
+* @param integer $num The number of top IPs to retrieve.
+*
+* @return array An associative array of IP information.
+*/
+function fivestarstats_get_ips_top_voters($num) {
+
+	$retval = array();
+
 	$query = "SELECT vote_source, COUNT(*) AS cnt "
 		. "FROM "
 		. "votingapi_vote "
@@ -280,16 +302,28 @@ function fivestarstats_get_ips($num) {
 	$cursor = db_query($query);
 	while ($row = db_fetch_array($cursor)) {
 		$ip = $row["vote_source"];
-		$retval["top_voters"][$ip] = $row["cnt"];
+		$retval[$ip] = $row["cnt"];
 	}
 
-	//
-	// Now fetch the top 1-star voters.
-	// This may or may not pick up abuse. For example, on anthrocon.org, *I*
-	// am the top 1-star voter, because we really haven't had any 
-	// "repeat 1-star voters".
-	//
-	$retval["top_1_star_voters"] = array();
+	return($retval);
+
+} // End of fivestarstats_get_ips_top_voters()
+
+
+/**
+* Now fetch the top 1-star voters.
+* This may or may not pick up abuse. For example, on anthrocon.org, *I*
+* am the top 1-star voter, because we really haven't had any 
+* "repeat 1-star voters".
+*
+* @param integer $num The number of top IPs to retrieve.
+*
+* @return array An associative array of IP information.
+*/
+function fivestarstats_get_ips_top_1_star_voters($num) {
+
+	$retval = array();
+
 	$query = "SELECT vote_source, COUNT(*) AS cnt "
 		. "FROM "
 		. "votingapi_vote "
@@ -303,14 +337,27 @@ function fivestarstats_get_ips($num) {
 	$cursor = db_query($query);
 	while ($row = db_fetch_array($cursor)) {
 		$ip = $row["vote_source"];
-		$retval["top_1_star_voters"][$ip] = $row["cnt"];
+		$retval[$ip] = $row["cnt"];
 	}
 
-	//
-	// Now determine which IPs have the lowest voting average.
-	// This is useful to find IPs that have only given low votes.
-	//
-	$retval["lowest_vote_average"] = array();
+	return($retval);
+
+} // End of fivestarstats_get_ips_top_1_star_voters()
+
+
+/**
+*
+* Now determine which IPs have the lowest voting average.
+* This is useful to find IPs that have only given low votes.
+*
+* @param integer $num The number of top IPs to retrieve.
+*
+* @return array An associative array of IP information.
+*/
+function fivestarstats_get_ips_lowest_vote_average($num) {
+
+	$retval = array();
+
 	$query = "SELECT vote_source, COUNT(value) AS cnt, "
 		. "SUM(value) AS sum, AVG(value) AS avg "
 		. "FROM "
@@ -329,14 +376,13 @@ function fivestarstats_get_ips($num) {
 	$cursor = db_query($query);
 	while ($row = db_fetch_array($cursor)) {
 		$ip = $row["vote_source"];
-		$retval["lowest_vote_average"][$ip] = array(
+		$retval[$ip] = array(
 			"cnt" => $row["cnt"],
 			"avg1" => $row["avg"] / 20,
 			);
 	}
-		
+
 	return($retval);
-
-} // End of fivestarstats_get_ips()
-
+		
+} // End of fivestarstats_get_ips_lowest_vote_average()
 
