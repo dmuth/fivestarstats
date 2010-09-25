@@ -209,7 +209,7 @@ function fivestarstats_get_user_stats($num_users) {
 
 		$retval[$uid]["num_votes"] = $row["cnt"];
 		$retval[$uid]["total"] = $row["total"];
-		$retval[$uid]["average"] = $row["total"] / $row["cnt"];
+		$retval[$uid]["average"] = $row["total"] / $row["cnt"] / 20;
 
 	}
 
