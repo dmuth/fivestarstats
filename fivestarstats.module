@@ -41,10 +41,180 @@ function fivestarstats_perm() {
 function fivestarstats_main() {
 
 	$retval = "";
+	$data = array();
+
+	$data["total"] = fivestarstats_get_total_stats();
+
+	$num_users = 10;
+	$data["users"] = fivestarstats_get_user_stats($num_users);
+
+	//$retval .= t("<b>Total Votes:</b> %num_votes from %num_ips unique IPs "
+	//	. "with average of %num_stars stars.",
+	//	array("%num_votes" => $num_votes, "%num_ips" => $num_ips, 
+	//		"%num_stars" => $average_stars));
+
+		//$retval .= "<li>" . l($row["name"], "user/" . $row["uid"]) . ": " 
+		//	. t("%num posts", array("%num" => $row["cnt"]))
+		//	. "</li>";
+
+	//$retval .= "<h2>Top Posters (nodes and comments)</h2>";
+	//$retval .= "<ul>";
+	//$retval .= "</ul>";
+
+$retval .= "<pre>" . print_r($data, true) . "</pre>";
+
+/*
+Tables:
+mysql> desc votingapi_vote;
++--------------+------------------+------+-----+---------+----------------+
+| Field        | Type             | Null | Key | Default | Extra          |
++--------------+------------------+------+-----+---------+----------------+
+| vote_id      | int(11)          | NO   | PRI | NULL    | auto_increment |
+| content_type | varchar(20)      | YES  | MUL | NULL    |                |
+| content_id   | int(10) unsigned | YES  |     | NULL    |                |
+| value        | float            | YES  |     | NULL    |                |
+| value_type   | varchar(20)      | NO   |     | NULL    |                |
+| tag          | varchar(128)     | YES  |     | vote    |                |
+| uid          | int(10) unsigned | YES  |     | 0       |                |
+| timestamp    | int(11)          | YES  |     | NULL    |                |
+| vote_source  | varchar(255)     | YES  |     | NULL    |                |
++--------------+------------------+------+-----+---------+----------------+
+
+
+TODO:
+
+Posts:
+X Highest posters
+X Vote average for each poster
+- number/percentage of 1-star votes for each poster
+
+IPs:
+- Most active IPs
+- Number/percentage of 1-star votes per IP
+
+1-star IPs:
+- Highest number of 1-star votes
+- 1-star vote percentage per IP
+- break down of users voted on by IP, list top users given 1-star ratings
+
+
+*/
 
 	return($retval);
 
 } // End of fivestarstats_main()
 
+
+/**
+* Get total statistics.
+*
+* @return array An associative array of data.
+*/
+function fivestarstats_get_total_stats() {
+
+	//
+	// How many votes cast?
+	//
+	$retval = array();
+	$query = "SELECT COUNT(*) AS cnt FROM votingapi_vote WHERE value_type='percent'";
+	$cursor = db_query($query);
+	$row = db_fetch_array($cursor);
+	$retval["num_votes"] = $row["cnt"];
+	
+	//
+	// How many unique IPs voted?
+	//
+	$query = "SELECT COUNT(*) AS cnt FROM ("
+		. "SELECT DISTINCT vote_source FROM votingapi_vote "
+			. "WHERE value_type='perent') AS tbl1";
+	$cursor = db_query($query);
+	$row = db_fetch_array($cursor);
+	$retval["num_ips"] = $row["cnt"];
+
+	//
+	// What's the average vote value in stars?
+	//
+	$query = "SELECT AVG(value) AS average FROM votingapi_vote "
+		. "WHERE value_type='percent'";
+	$cursor = db_query($query);
+	$row = db_fetch_array($cursor);
+	$average = $row["average"];
+	$retval["average_stars"] = sprintf("%.2f", $average / 20);
+
+	return($retval);
+
+} // End of fivestarstats_get_total_stats()
+
+
+/**
+* Get statistics on users.
+*
+* @param integer $num_users The number of "top" users to query.
+*
+* @return array Associative array of data where the key is the user ID.
+*/
+function fivestarstats_get_user_stats($num_users) {
+
+	$retval = array();
+
+	//
+	// Get top posters. Both nodes AND comments.
+	//
+	$query = "SELECT tbl1.uid, sum(cnt) AS cnt, users.name FROM "
+		. "(SELECT uid, count(*) AS cnt FROM comments GROUP BY uid "
+			. "UNION SELECT uid, count(*) AS cnt FROM node GROUP BY uid)"
+			. " tbl1 "
+		. "JOIN users ON tbl1.uid = users.uid GROUP BY uid ORDER BY cnt DESC "
+		. "LIMIT $num_users"
+		;
+	$cursor = db_query($query);
+	
+	while ($row = db_fetch_array($cursor)) {
+
+		$uid = $row["uid"];
+		$user = array();
+		$user["num_posts"] = $row["cnt"];
+		$user["name"] = $row["name"];
+
+		$retval[$uid] = $user;
+
+	}
+
+	//
+	// Get average rating for each poster's posts.
+	//
+	foreach ($retval as $key => $value) {
+
+		$uid = $key;
+
+		$query = ""
+			. "SELECT SUM(cnt) AS cnt, SUM(total) AS total FROM "
+			. "("
+			. "SELECT COUNT(*) AS cnt, SUM(value) AS total, uid FROM votingapi_vote "
+			. "WHERE "
+			. "value_type='percent' "
+			. "AND content_type='node' AND content_id IN "
+				. "(SELECT nid FROM node WHERE uid=%d) "
+			. "UNION "
+			. "SELECT COUNT(*) AS cnt, SUM(value) AS total, uid FROM votingapi_vote "
+			. "WHERE "
+			. "value_type='percent' "
+			. "AND content_type='comment' AND content_id IN "
+				. "(SELECT cid FROM comments WHERE uid=%d) "
+			. ") tbl1 "
+			;
+		$query_args = array($uid, $uid);
+		$cursor = db_query($query, $query_args);
+		$row = db_fetch_array($cursor);
+
+		$retval[$uid]["num_votes"] = $row["cnt"];
+		$retval[$uid]["total"] = $row["total"];
+		$retval[$uid]["average"] = $row["total"] / $row["cnt"];
+
+	}
+
+	return($retval);
+
+} // End of fivestarstats_get_user_stats()
 
 
