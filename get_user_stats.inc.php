@@ -22,10 +22,10 @@ function fivestarstats_get_user_stats($num) {
 	//
 	$min_votes = 10;
 
-	$retval["top_rated"] = fivestarstats_get_user_stats_top_rated($num, $min_votes);
+	//$retval["top_rated"] = fivestarstats_get_user_stats_top_rated($num, $min_votes);
 /*
 Users:
-- Top-rated users (min 10 votes) $min_votes
+X Top-rated users (min 10 votes) $min_votes
 - Lowest rated users (min 10 votes) $min_votes
 - Users with most 1-star votes (for abuse purposes)
 */
@@ -33,7 +33,6 @@ Users:
 	//
 	// Get top posters. Both nodes AND comments.
 	//
-/*
 	$retval["top_posters"] = fivestarstats_get_user_stats_top_posters($num);
 
 	foreach ($retval["top_posters"] as $key => $value) {
@@ -43,6 +42,7 @@ Users:
 		$retval["top_posters"][$uid]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
 
 	}
+/*
 */
 
 	return($retval);
@@ -62,9 +62,12 @@ function fivestarstats_get_user_stats_top_posters($num) {
 	$retval = array();
 
 	$query = "SELECT tbl1.uid, sum(cnt) AS cnt, users.name FROM "
-		. "(SELECT uid, count(*) AS cnt FROM comments GROUP BY uid "
-			. "UNION SELECT uid, count(*) AS cnt FROM node GROUP BY uid)"
-			. " tbl1 "
+		. "("
+			. "SELECT uid, count(*) AS cnt FROM comments GROUP BY uid "
+			. "UNION ALL "
+			. "SELECT uid, count(*) AS cnt FROM node GROUP BY uid"
+			. ")"
+		. " tbl1 "
 		. "JOIN users ON tbl1.uid = users.uid GROUP BY uid ORDER BY cnt DESC "
 		. "LIMIT $num"
 		;
@@ -108,7 +111,7 @@ function fivestarstats_get_user_stats_avg_rating($uid) {
 		. "value_type='percent' "
 		. "AND content_type='node' AND content_id IN "
 			. "(SELECT nid FROM node WHERE uid=%d) "
-		. "UNION "
+		. "UNION ALL "
 		. "SELECT COUNT(*) AS cnt, SUM(value) AS total FROM votingapi_vote "
 		. "WHERE "
 		. "value_type='percent' "
