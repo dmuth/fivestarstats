@@ -53,13 +53,13 @@ function fivestarstats_main() {
 	$data = array();
 
 	include("get_total_stats.inc.php");
-	$data["total"] = fivestarstats_get_total_stats();
+	//$data["total"] = fivestarstats_get_total_stats();
 
 	include("get_user_stats.inc.php");
 	$data["users"] = fivestarstats_get_user_stats($num);
 
 	include("get_ips.inc.php");
-	$data["ips"] = fivestarstats_get_ips($num);
+	//$data["ips"] = fivestarstats_get_ips($num);
 
 	//$retval .= t("<b>Total Votes:</b> %num_votes from %num_ips unique IPs "
 	//	. "with average of %num_stars stars.",
@@ -77,23 +77,6 @@ function fivestarstats_main() {
 $retval .= "<pre>" . print_r($data, true) . "</pre>";
 
 /*
-Tables:
-mysql> desc votingapi_vote;
-+--------------+------------------+------+-----+---------+----------------+
-| Field        | Type             | Null | Key | Default | Extra          |
-+--------------+------------------+------+-----+---------+----------------+
-| vote_id      | int(11)          | NO   | PRI | NULL    | auto_increment |
-| content_type | varchar(20)      | YES  | MUL | NULL    |                |
-| content_id   | int(10) unsigned | YES  |     | NULL    |                |
-| value        | float            | YES  |     | NULL    |                |
-| value_type   | varchar(20)      | NO   |     | NULL    |                |
-| tag          | varchar(128)     | YES  |     | vote    |                |
-| uid          | int(10) unsigned | YES  |     | 0       |                |
-| timestamp    | int(11)          | YES  |     | NULL    |                |
-| vote_source  | varchar(255)     | YES  |     | NULL    |                |
-+--------------+------------------+------+-----+---------+----------------+
-
-
 TODO:
 
 Posts:
