@@ -53,10 +53,10 @@ function fivestarstats_main() {
 	$data = array();
 
 	include("get_total_stats.inc.php");
-	//$data["total"] = fivestarstats_get_total_stats();
+	$data["total"] = fivestarstats_get_total_stats();
 
 	include("get_ips.inc.php");
-	//$data["ips"] = fivestarstats_get_ips($num);
+	$data["ips"] = fivestarstats_get_ips($num);
 
 	include("get_user_stats.inc.php");
 	$data["users"] = fivestarstats_get_user_stats($num);
@@ -74,27 +74,7 @@ function fivestarstats_main() {
 	//$retval .= "<ul>";
 	//$retval .= "</ul>";
 
-$retval .= "<pre>" . print_r($data, true) . "</pre>";
-
-/*
-TODO:
-
-Posts:
-X Highest posters
-X Vote average for each poster
-X number/percentage of 1-star votes for each poster
-
-IPs:
-X Most active IPs
-X Number/percentage of 1-star votes per IP
-X Highest number of 1-star votes
-
-Users:
-- Top-rated users
-- Lowest rated users
-- Users with most 1-star votes (for abuse purposes)
-
-*/
+$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 	return($retval);
 

@@ -22,17 +22,10 @@ function fivestarstats_get_user_stats($num) {
 	//
 	$min_votes = 10;
 
-	//$retval["top_rated"] = fivestarstats_get_user_stats_top_rated($num, $min_votes);
-	//$retval["bottom_rated"] = fivestarstats_get_user_stats_bottom_rated($num, $min_votes);
+	$retval["top_rated"] = fivestarstats_get_user_stats_top_rated($num, $min_votes);
+	$retval["bottom_rated"] = fivestarstats_get_user_stats_bottom_rated($num, $min_votes);
+	$retval["most_1_star_votes"] = fivestarstats_get_user_stats_most_1_star_votes($num);
 
-/*
-Users:
-X Top-rated users (min 10 votes) $min_votes
-X Lowest rated users (min 10 votes) $min_votes
-- Users with most 1-star votes (for abuse purposes)
-*/
-
-/*
 	//
 	// Get top posters. Both nodes AND comments.
 	//
@@ -45,7 +38,6 @@ X Lowest rated users (min 10 votes) $min_votes
 		$retval["top_posters"][$uid]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
 
 	}
-*/
 
 	return($retval);
 
@@ -300,4 +292,51 @@ function fivestarstats_get_user_stats_bottom_rated($num, $min_votes) {
 	return($retval);
 
 } // End of fivestarstats_get_user_stats_bottom_rated()
+
+
+/**
+* Determine which users have the most 1-star votes against them. 
+* This can be used to catch abuse of the voting system.
+*
+* @param integer $num The number of users we want.
+*/
+function fivestarstats_get_user_stats_most_1_star_votes($num) {
+
+	$retval = array();
+
+	$query = "SELECT "
+		. "tbl1.uid, users.name, COUNT(*) AS cnt "
+		. "FROM ("
+			. "SELECT node.uid "
+			. "FROM votingapi_vote "
+			. "JOIN node ON node.nid=content_id "
+			. "WHERE "
+			. "value_type='percent' "
+			. "AND value=20 "
+			. "AND content_type='node' "
+
+			. "UNION ALL "
+
+			. "SELECT comments.uid "
+			. "FROM votingapi_vote "
+			. "JOIN comments ON comments.cid=content_id "
+			. "WHERE "
+			. "value_type='percent' "
+			. "AND value=20 "
+			. "AND content_type='comment' "
+		. ") tbl1 "
+		. "JOIN users ON users.uid = tbl1.uid "
+		. "GROUP BY tbl1.uid "
+		. "ORDER BY cnt DESC "
+		. "LIMIT $num "
+		;
+
+	$cursor = db_query($query);
+	while ($row = db_fetch_array($cursor)) {
+		$retval[] = $row;
+	}
+
+	return($retval);
+
+} // End of fivestarstats_get_user_stats_most_1_star_votes()
 
