@@ -61,6 +61,8 @@ function fivestarstats_main() {
 	include("get_user_stats.inc.php");
 	$data["users"] = fivestarstats_get_user_stats($num);
 
+	$retval .= "<h2>Here's a print_r() of our data. (a real interface is coming soon!)</h2>";
+
 	//$retval .= t("<b>Total Votes:</b> %num_votes from %num_ips unique IPs "
 	//	. "with average of %num_stars stars.",
 	//	array("%num_votes" => $num_votes, "%num_ips" => $num_ips, 
