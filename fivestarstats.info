@@ -1,0 +1,9 @@
+; $Id: fivestarextra.info,v 1.1 2008/10/26 18:53:52 likeless Exp $
+
+name = Fivestar Stats
+description = Create statistics from votes made in Fivestar. Useful for tracking abuse.
+package = Voting
+core = 6.x
+dependencies[] = fivestar
+dependencies[] = votingapi
+
