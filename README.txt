@@ -1,5 +1,5 @@
 
-Welcome to the Fivestar Stats module!
+Welcome to the Fivestar Stats Drupal module!
 
 I wrote this module to scratch an itch of mine: I wanted a way to get voting
 stats, and also to catch abuses of the voting system (a single user 
@@ -31,9 +31,9 @@ are hard coded.
 
 Who I am:
 
-My name is Douglas Muth, call me Doug.  I've been programming professionally
-for about 11 years now and have written several other Drupal modules.  I
-live in Ardmore, PA and have NO children or pets.
+My name is Douglas Muth, but please call me Doug.  I've been programming 
+professionally for about 11 years and have written several other Drupal 
+modules.  I live in Ardmore, PA and work in Center City Philadelphia.
 
 My website, in all its monochrome glory, is at: http://www.dmuth.org/
 
