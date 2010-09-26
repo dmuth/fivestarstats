@@ -48,7 +48,7 @@ function fivestarstats_main() {
 
 	$retval = "";
 
-	$num = 10;
+	$num = 5;
 
 	$data = array();
 
@@ -64,25 +64,10 @@ function fivestarstats_main() {
 	include("form.inc.php");
 	$retval .= drupal_get_form("fivestarstats_form", $data);
 
-		//$retval .= "<li>" . l($row["name"], "user/" . $row["uid"]) . ": " 
-		//	. t("%num posts", array("%num" => $row["cnt"]))
-		//	. "</li>";
-
-	//$retval .= "<h2>Top Posters (nodes and comments)</h2>";
-	//$retval .= "<ul>";
-	//$retval .= "</ul>";
-
-	$retval .= "<h2>Here's a print_r() of our data. (a real interface is coming soon!)</h2>";
-
-//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
-$retval .= "<pre>" . print_r($data["ips"], true) . "</pre>"; // Debugging
+	//$retval .= "<pre>" . print_r($data["users"]["top_posters"], true) . "</pre>"; // Debugging
 
 	return($retval);
 
 } // End of fivestarstats_main()
-
-
-
-
 
 
