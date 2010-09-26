@@ -33,9 +33,13 @@ function fivestarstats_get_user_stats($num) {
 
 	foreach ($retval["top_posters"] as $key => $value) {
 
-		$uid = $key;
-		$retval["top_posters"][$uid] = fivestarstats_get_user_stats_avg_rating($uid);
-		$retval["top_posters"][$uid]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
+		$uid = $value["uid"];
+		$tmp = fivestarstats_get_user_stats_avg_rating($uid);
+		foreach ($tmp as $key2 => $value2) {
+			$retval["top_posters"][$key][$key2] = $value2;
+		}
+
+		$retval["top_posters"][$key]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
 
 	}
 
@@ -69,12 +73,12 @@ function fivestarstats_get_user_stats_top_posters($num) {
 	
 	while ($row = db_fetch_array($cursor)) {
 
-		$uid = $row["uid"];
 		$user = array();
 		$user["num_posts"] = $row["cnt"];
 		$user["name"] = $row["name"];
+		$user["uid"] = $row["uid"];
 
-		$retval[$uid] = $user;
+		$retval[] = $user;
 
 	}
 
