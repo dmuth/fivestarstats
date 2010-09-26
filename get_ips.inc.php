@@ -118,11 +118,12 @@ function fivestarstats_get_ips_lowest_vote_average($num) {
 		// Right now, we're hard coding in a minimum of 10 votes. 
 		// I'll probably change this later.
 		//
-		. "HAVING cnt >=10 "
+		. "HAVING cnt >= %d "
 		. "ORDER BY avg ASC, cnt DESC "
 		. "LIMIT $num "
 		;
-	$cursor = db_query($query);
+	$query_args = array($num);
+	$cursor = db_query($query, $query_args);
 	while ($row = db_fetch_array($cursor)) {
 		$ip = $row["vote_source"];
 		$retval[$ip] = array(
