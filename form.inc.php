@@ -96,8 +96,10 @@ function fivestarstats_form_ips($data) {
 	
 	$rows = array();
 	foreach ($data["top_voters"] as $key => $value) {
+		$link = l($value . t(" votes"), 
+			"admin/settings/fivestarstats/ip/" . $key);
 		$row = array($key, 
-			array("data" => $value . t(" votes"), "align" => "right"),
+			array("data" => $link, "align" => "right"),
 			);
 		$rows[] = $row;
 	}
@@ -115,8 +117,10 @@ function fivestarstats_form_ips($data) {
 	//
 	$rows = array();
 	foreach ($data["top_1_star_voters"] as $key => $value) {
+		$link = l($value . t(" votes"), 
+			"admin/settings/fivestarstats/ip/" . $key);
 		$row = array($key, 
-			array("data" => $value . t(" votes"), "align" => "right"),
+			array("data" => $link, "align" => "right"),
 			);
 		$rows[] = $row;
 	}
@@ -135,8 +139,10 @@ function fivestarstats_form_ips($data) {
 	$header = array(t("IP"), t("Number of Votes"), t("Average Vote"));
 	$rows = array();
 	foreach ($data["lowest_vote_average"] as $key => $value) {
+		$link = l($value["cnt"] . t(" votes"), 
+			"admin/settings/fivestarstats/ip/" . $key);
 		$row = array($key, 
-			array("data" => $value["cnt"] . t(" votes"), "align" => "right"),
+			array("data" => $link, "align" => "right"),
 			array("data" => sprintf("%.2f", $value["avg"]) . t(" stars"), "align" => "right"),
 			);
 		$rows[] = $row;
@@ -165,7 +171,7 @@ function fivestarstats_form_users($data) {
 	$retval = array(
 		"#type" => "fieldset",
 		"#collapsible" => true,
-		"#title" => t("User Activity"),
+		"#title" => t("User Activity (votes received)"),
 		);
 
 	//
@@ -174,8 +180,10 @@ function fivestarstats_form_users($data) {
 	$header = array(t("Username"), t("# of times voted on"), t("Average Vote"));
 	$rows = array();
 	foreach ($data["top_rated"] as $key => $value) {
+		$link = l($value["num_votes"] . t(" votes"), 
+			"admin/settings/fivestarstats/user/" . $value["uid"]);
 		$row = array($value["name"], 
-			array("data" => $value["num_votes"], "align" => "right"),
+			array("data" => $link, "align" => "right"),
 			array("data" => sprintf("%.2f", $value["average"]) . t(" stars"),
 				"align" => "right"),
 			);
@@ -195,8 +203,10 @@ function fivestarstats_form_users($data) {
 	//
 	$rows = array();
 	foreach ($data["bottom_rated"] as $key => $value) {
+		$link = l($value["num_votes"] . t(" votes"), 
+			"admin/settings/fivestarstats/user/" . $value["uid"]);
 		$row = array($value["name"], 
-			array("data" => $value["num_votes"], "align" => "right"),
+			array("data" => $link, "align" => "right"),
 			array("data" => sprintf("%.2f", $value["average"]) . t(" stars"),
 				"align" => "right"),
 			);
@@ -219,9 +229,10 @@ function fivestarstats_form_users($data) {
 
 	$rows = array();
 	foreach ($data["most_1_star_votes"] as $key => $value) {
+		$link = l($value["cnt"] . t(" votes"), 
+			"admin/settings/fivestarstats/user/" . $value["uid"]);
 		$row = array($value["name"], 
-			array("data" => $value["cnt"] . t(" votes"),
-				"align" => "right")
+			array("data" => $link, "align" => "right"),
 			);
 		$rows[] = $row;
 	}
@@ -242,11 +253,12 @@ function fivestarstats_form_users($data) {
 		t("average rating"));
 	$rows = array();
 	foreach ($data["top_posters"] as $key => $value) {
+		$link = l($value["num_votes"] . t(" votes"), 
+			"admin/settings/fivestarstats/user/" . $value["uid"]);
 		$row = array($value["name"], 
 			array("data" => $value["num_posts"] . t(" posts"), 
 				"align" => "right"),
-			array("data" => $value["num_votes"] . t(" votes"), 
-				"align" => "right"),
+			array("data" => $link, "align" => "right"),
 			array("data" => sprintf("%.2f stars", $value["average"]), 
 				"align" => "right"),
 			);

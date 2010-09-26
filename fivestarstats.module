@@ -21,8 +21,13 @@ function fivestarstats_menu() {
 		"page callback" => "fivestarstats_main",
 		"access arguments" => array("administer site configuration"),
 		"type" => MENU_NORMAL_ITEM,
-		
 		);
+
+// fivestarstats/ip/$IP -> fivestarstats_ip(), fivestarstats_get_ip_votes()
+// fivestarstats/ip/$IP/nstars -> fivestarstats_ip_stars(). fivestarstats_get_ip_votes_detail($numstars);
+// fivestarstats/user/$uid -> fivestarstats_user(), fivestarstats_get_user_votes_detail($numstars)
+// fivestarstats/user/$uid/nstars -> fivestarstats_user()
+
 
 	return($retval);
 
