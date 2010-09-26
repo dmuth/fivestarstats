@@ -23,9 +23,29 @@ function fivestarstats_menu() {
 		"type" => MENU_NORMAL_ITEM,
 		);
 
-// fivestarstats/ip/$IP -> fivestarstats_ip(), fivestarstats_get_ip_votes()
+	//
+	// View voting history of a specific IP
+	//
+	$retval["admin/settings/fivestarstats/ip/%"] = array(
+		"title" => "IP Voting Activity",
+		"page callback" => "fivestarstats_ip",
+		"page arguments" => array(4),
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_CALLBACK,
+		);
+
+	//
+	// View votes cast on a specific IP.
+	//
+	$retval["admin/settings/fivestarstats/uid/%"] = array(
+		"title" => "Votes cast on user",
+		"page callback" => "fivestarstats_uid",
+		"page arguments" => array(4),
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_CALLBACK,
+		);
+
 // fivestarstats/ip/$IP/nstars -> fivestarstats_ip_stars(). fivestarstats_get_ip_votes_detail($numstars);
-// fivestarstats/user/$uid -> fivestarstats_user(), fivestarstats_get_user_votes_detail($numstars)
 // fivestarstats/user/$uid/nstars -> fivestarstats_user()
 
 
@@ -69,10 +89,64 @@ function fivestarstats_main() {
 	include("form.inc.php");
 	$retval .= drupal_get_form("fivestarstats_form", $data);
 
-	//$retval .= "<pre>" . print_r($data["users"]["top_posters"], true) . "</pre>"; // Debugging
+	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 	return($retval);
 
 } // End of fivestarstats_main()
+
+
+/**
+* Main function to print up voting history of a specific IP
+*
+* @param string $ip The IP address to get voting history of.
+*/
+function fivestarstats_ip($ip) {
+
+	$retval = "";
+
+	$retval .= t("<h2>Votes cast by IP: %ip</h2>", array("%ip" => $ip));
+
+	$data = array();
+
+	include("ip.inc.php");
+	$data["votes"] = fivestarstats_ip_get_votes($ip);
+	$data["users"] = fivestarstats_ip_get_users($ip);
+	
+	$retval .= "<h2>Using print_r() as a placeholder for now. :-)</h2>";
+
+	$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+
+/*
+TODO:
+X Get breakdown of votes
+	- links to separte vote page
+		- fivestarstats_ip_get_votes_detail()
+X Get breakdown of users on this IP from accesslog
+	- links to users
+
+*/
+
+	return($retval);
+
+} // End of fivestarstats_ip()
+
+
+/**
+* Main function to print up votes received on a specific UID.
+*
+* @param integer $uid The UID to get info of votes cast on.
+*/
+function fivestarstats_uid($uid) {
+
+	$retval = "";
+
+// fivestarstats/user/$uid -> fivestarstats_user(), fivestarstats_get_user_votes_detail($numstars)
+	$retval .= "Placeholder for votes cast on UID: $uid";
+
+	return($retval);
+
+} // End of fivestarstats_user()
+
 
 
