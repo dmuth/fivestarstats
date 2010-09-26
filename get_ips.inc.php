@@ -127,7 +127,7 @@ function fivestarstats_get_ips_lowest_vote_average($num) {
 		$ip = $row["vote_source"];
 		$retval[$ip] = array(
 			"cnt" => $row["cnt"],
-			"avg1" => $row["avg"] / 20,
+			"avg" => $row["avg"] / 20,
 			);
 	}
 
