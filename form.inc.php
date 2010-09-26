@@ -29,7 +29,8 @@ function fivestarstats_form($form_data, $data) {
 		array("!link" => l(t("can be read here"), $filename))) 
 		. ".<br/>";
 	$content .= t("The latest version of this module can be downloaded from: !link.<br/>",
-		array("!link" => l("http://github.com/dmuth/fivestarstats", "http://github.com/dmuth/fivestarstats")));
+		array("!link" => l("http://github.com/dmuth/fivestarstats", 
+			"http://github.com/dmuth/fivestarstats")));
 
 	$retval["info"] = array(
 		"#type" => "fieldset",
