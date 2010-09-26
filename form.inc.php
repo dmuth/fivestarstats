@@ -45,9 +45,9 @@ function fivestarstats_form_total_votes($data) {
 
 	$retval["content"] = array(
 		"#type" => "item",
-		"#value" => t("%num_votes from %num_ips unique IPs "
+		"#value" => t("%num_votes votes from %num_ips unique IPs "
 			. "with average of %num_stars stars per vote.",
-			array("%num_votes" => $data["num_votes"],
+			array("%num_votes" => number_format($data["num_votes"]),
 				"%num_ips" => $data["num_ips"],
 				"%num_stars" => $data["average_stars"])
 			)
