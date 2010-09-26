@@ -27,7 +27,7 @@ function fivestarstats_get_total_stats() {
 	//
 	$query = "SELECT COUNT(*) AS cnt FROM ("
 		. "SELECT DISTINCT vote_source FROM votingapi_vote "
-			. "WHERE value_type='perent') AS tbl1";
+			. "WHERE value_type='percent') AS tbl1";
 	$cursor = db_query($query);
 	$row = db_fetch_array($cursor);
 	$retval["num_ips"] = $row["cnt"];
