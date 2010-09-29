@@ -26,6 +26,7 @@ function fivestarstats_menu() {
 	//
 	// View voting history of a specific IP
 	//
+	//$retval["admin/settings/fivestarstats/ip/%"] = array(
 	$retval["admin/settings/fivestarstats/ip/%"] = array(
 		"title" => "IP Voting Activity",
 		"page callback" => "fivestarstats_ip",
@@ -35,7 +36,18 @@ function fivestarstats_menu() {
 		);
 
 	//
-	// View votes cast on a specific IP.
+	// View all votes cast by a specific IP.
+	//
+	$retval["admin/settings/fivestarstats/ip/%/%"] = array(
+		"title" => "All votes cast by an IP",
+		"page callback" => "fivestarstats_ip_votes",
+		"page arguments" => array(4, 5),
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_CALLBACK,
+		);
+
+	//
+	// View votes cast on a specific user.
 	//
 	$retval["admin/settings/fivestarstats/uid/%"] = array(
 		"title" => "Votes cast on user",
@@ -45,9 +57,7 @@ function fivestarstats_menu() {
 		"type" => MENU_CALLBACK,
 		);
 
-// fivestarstats/ip/$IP/nstars -> fivestarstats_ip_stars(). fivestarstats_get_ip_votes_detail($numstars);
 // fivestarstats/user/$uid/nstars -> fivestarstats_user()
-
 
 	return($retval);
 
@@ -119,13 +129,6 @@ function fivestarstats_ip($ip) {
 
 	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
-/*
-TODO:
-X Get breakdown of votes
-	- links to separte vote page
-		- fivestarstats_ip_get_votes_detail()
-*/
-
 	return($retval);
 
 } // End of fivestarstats_ip()
@@ -135,6 +138,8 @@ X Get breakdown of votes
 * Main function to print up votes received on a specific UID.
 *
 * @param integer $uid The UID to get info of votes cast on.
+*
+* @return string HTML code.
 */
 function fivestarstats_uid($uid) {
 
@@ -147,5 +152,28 @@ function fivestarstats_uid($uid) {
 
 } // End of fivestarstats_user()
 
+
+/**
+* Display all specific votes of a certain rating cast by a specific IP.
+*
+* @param string $ip The IP address
+*
+* @param integer $num_stars The number of star votes to search for.
+*	This can be useful for finding all 1-star votes to pick up abuses.
+*
+* @return string HTML code.
+*/
+function fivestarstats_ip_votes($ip, $num_stars) {
+
+	$retval .= t("<h2>Specific votes cast by IP: %ip</h2>", array("%ip" => $ip));
+
+// call fivestarstats_ip_get_votes()
+// call fivestarstats_ip_get_votes_html()
+
+	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+
+	return($retval);
+
+} // End of fivestarstats_ip_votes()
 
 
