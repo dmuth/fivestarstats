@@ -95,7 +95,8 @@ function fivestarstats_ip_get_votes_html($ip, $data) {
 	$rows = array();
 
 	foreach ($data as $key => $value) {
-		$link = l($value . t(" votes"), "fivestarstats/ip/$ip/$key");
+		$link = l($value . t(" votes"), 
+			"admin/settings/fivestarstats/ip/$ip/$key");
 		$row = array($key . t(" stars"),
 			array("data" => $link, "align" => "right"),
 			);
