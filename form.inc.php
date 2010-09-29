@@ -92,7 +92,7 @@ function fivestarstats_form_ips($data) {
 	//
 	// Top voters
 	//
-	$header = array(t("IP"), t("Number of votes"));
+	$header = array(t("IP"), t("Number of Votes Cast"));
 	
 	$rows = array();
 	foreach ($data["top_voters"] as $key => $value) {
@@ -136,7 +136,7 @@ function fivestarstats_form_ips($data) {
 	//
 	// Lowest vote average
 	//
-	$header = array(t("IP"), t("Number of Votes"), t("Average Vote"));
+	$header = array(t("IP"), t("Number of Votes Cast"), t("Average Vote"));
 	$rows = array();
 	foreach ($data["lowest_vote_average"] as $key => $value) {
 		$link = l($value["cnt"] . t(" votes"), 
