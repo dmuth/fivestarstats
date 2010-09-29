@@ -105,26 +105,25 @@ function fivestarstats_ip($ip) {
 
 	$retval = "";
 
-	$retval .= t("<h2>Votes cast by IP: %ip</h2>", array("%ip" => $ip));
-
 	$data = array();
 
 	include("ip.inc.php");
 	$data["votes"] = fivestarstats_ip_get_votes($ip);
 	$data["users"] = fivestarstats_ip_get_users($ip);
 	
-	$retval .= "<h2>Using print_r() as a placeholder for now. :-)</h2>";
+	$retval .= fivestarstats_ip_get_votes_html($ip, $data["votes"]);
 
-	$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+	$retval .= "<br/>\n";
+
+	$retval .= fivestarstats_ip_get_users_html($data["users"]);
+
+	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 /*
 TODO:
 X Get breakdown of votes
 	- links to separte vote page
 		- fivestarstats_ip_get_votes_detail()
-X Get breakdown of users on this IP from accesslog
-	- links to users
-
 */
 
 	return($retval);

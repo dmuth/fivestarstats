@@ -76,3 +76,89 @@ function fivestarstats_ip_get_users($ip) {
 } // End of fivestarstats-ip_get_users()
 
 
+/**
+* Get HTML of the vote distribution for an IP.
+*
+* @param string $ip The IP address
+*
+* @param array $data Array of vote values and quantities.
+*
+* @return string HTML code.
+*/
+function fivestarstats_ip_get_votes_html($ip, $data) {
+
+	$retval = "";
+
+	$retval .= t("<h2>Votes cast by IP: %ip</h2>", array("%ip" => $ip));
+
+	$header = array(t("Stars"), t("Number of Votes cast"));
+	$rows = array();
+
+	foreach ($data as $key => $value) {
+		$row = array($key . t(" stars"),
+			array("data" => $value . t(" votes"), "align" => "right")
+			);
+		$rows[]  = $row;
+	}
+
+	if (empty($data)) {
+		$rows[] = array(
+			array("data" => t("No votes found from this IP"), "colspan" => "2")
+			);
+	}
+
+	$retval .= theme("table", $header, $rows);
+
+	return($retval);
+
+} // End of fivestarstats_ip_get_votes_html()
+
+
+/**
+* Get HTML of the users from this IP.
+*
+* @param array $data Array of users from this IP.
+*
+* @return string HTML code.
+*/
+function fivestarstats_ip_get_users_html($data) {
+
+	$retval = "";
+
+	$header = array(t("Username"), t("# of accesses from this IP"));
+	$rows = array();
+
+	foreach  ($data as $key => $value) {
+		$uid = $value["uid"];
+		$name = $value["name"];
+
+		if ($uid != 0) {
+			$row = array(l("/user/" . $uid, $name), 
+				array("data" => $value["cnt"] . t(" times"), "align" => "right")
+				);
+
+		} else {
+			$row = array(t("Anonymous User"), 
+				array("data" => $value["cnt"] . t(" times"), "align" => "right")
+				);
+
+		}
+
+		$rows[] = $row;
+
+	}
+
+	if (empty($data)) {
+		$rows[] = array(
+			array("data" => t("No users found from this IP"), "colspan" => "2")
+			);
+	}
+
+	$retval .= theme("table", $header, $rows);
+
+	return($retval);
+
+} // End of fivestarstats_ip_get_users_html()
+
+
+
