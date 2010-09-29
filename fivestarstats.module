@@ -165,6 +165,18 @@ function fivestarstats_uid($uid) {
 */
 function fivestarstats_ip_votes($ip, $num_stars) {
 
+	//
+	// Since we're two wildcards deep, build breadcrumbs.
+	//
+	$breadcrumb = array();
+	$breadcrumb[] = l(t("Home"), '<front>');
+	$breadcrumb[] = l(t("Admin"), "admin");
+	$breadcrumb[] = l(t("Site Configuration"), "admin/settings");
+	$breadcrumb[] = l(t("Fivestar Stats"), "admin/settings/fivestarstats");
+	$breadcrumb[] = l(t("IP: !ip", array("!ip" => $ip)), 
+		"admin/settings/fivestarstats/ip/$ip");
+	drupal_set_breadcrumb($breadcrumb);
+
 	$retval .= t("<h2>Specific votes cast by IP: %ip</h2>", array("%ip" => $ip));
 
 // call fivestarstats_ip_get_votes()
