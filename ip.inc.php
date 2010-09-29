@@ -95,8 +95,9 @@ function fivestarstats_ip_get_votes_html($ip, $data) {
 	$rows = array();
 
 	foreach ($data as $key => $value) {
+		$link = l($value . t(" votes"), "fivestarstats/ip/$ip/$key");
 		$row = array($key . t(" stars"),
-			array("data" => $value . t(" votes"), "align" => "right")
+			array("data" => $link, "align" => "right"),
 			);
 		$rows[]  = $row;
 	}
@@ -119,6 +120,8 @@ function fivestarstats_ip_get_votes_html($ip, $data) {
 *
 * @param array $data Array of users from this IP.
 *
+* @param string $ip The IP address
+*
 * @return string HTML code.
 */
 function fivestarstats_ip_get_users_html($data) {
@@ -133,7 +136,7 @@ function fivestarstats_ip_get_users_html($data) {
 		$name = $value["name"];
 
 		if ($uid != 0) {
-			$row = array(l("/user/" . $uid, $name), 
+			$row = array(l($name, "user/" . $uid), 
 				array("data" => $value["cnt"] . t(" times"), "align" => "right")
 				);
 
