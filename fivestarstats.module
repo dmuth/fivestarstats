@@ -26,7 +26,6 @@ function fivestarstats_menu() {
 	//
 	// View voting history of a specific IP
 	//
-	//$retval["admin/settings/fivestarstats/ip/%"] = array(
 	$retval["admin/settings/fivestarstats/ip/%"] = array(
 		"title" => "IP Voting Activity",
 		"page callback" => "fivestarstats_ip",
@@ -57,7 +56,7 @@ function fivestarstats_menu() {
 		"type" => MENU_CALLBACK,
 		);
 
-// fivestarstats/user/$uid/nstars -> fivestarstats_user()
+// fivestarstats/user/$uid/votes/(nstars|all) -> fivestarstats_user()
 
 	return($retval);
 
@@ -135,25 +134,6 @@ function fivestarstats_ip($ip) {
 
 
 /**
-* Main function to print up votes received on a specific UID.
-*
-* @param integer $uid The UID to get info of votes cast on.
-*
-* @return string HTML code.
-*/
-function fivestarstats_uid($uid) {
-
-	$retval = "";
-
-// fivestarstats/user/$uid -> fivestarstats_user(), fivestarstats_get_user_votes_detail($numstars)
-	$retval .= "Placeholder for votes cast on UID: $uid";
-
-	return($retval);
-
-} // End of fivestarstats_user()
-
-
-/**
 * Display all specific votes of a certain rating cast by a specific IP.
 *
 * @param string $ip The IP address
@@ -196,5 +176,26 @@ function fivestarstats_ip_votes($ip, $num_stars) {
 	return($retval);
 
 } // End of fivestarstats_ip_votes()
+
+
+/**
+* Main function to print up votes received on a specific UID.
+*
+* @param integer $uid The UID to get info of votes cast on.
+*
+* @return string HTML code.
+*/
+function fivestarstats_uid($uid) {
+
+	$retval = "";
+
+// fivestarstats_uid_get_votes_detail($numstars)
+// fivestarstats_uid_get_votes_detail_html($numstars)
+	$retval .= "Placeholder for votes cast on UID: $uid";
+
+	return($retval);
+
+} // End of fivestarstats_uid()
+
 
 
