@@ -35,6 +35,7 @@ function fivestarstats_form($form_data, $data) {
 	$retval["info"] = array(
 		"#type" => "fieldset",
 		"#collapsible" => true,
+		"#collapsed" => true,
 		"#title" => t("Module Info"),
 		"#description" => $content,
 		);
@@ -92,6 +93,8 @@ function fivestarstats_form_ips($data) {
 		"#description" => "",
 		);
 
+	$content = array();
+
 	//
 	// Top voters
 	//
@@ -107,10 +110,9 @@ function fivestarstats_form_ips($data) {
 		$rows[] = $row;
 	}
 
-	$content = theme("table", $header, $rows);
+	$content["top voters"] = "<h2>" . t("Top Voters") . "</h2>";
+	$content["top voters"] .= theme("table", $header, $rows);
 
-	$retval["#description"] .= "<h2>" . t("Top Voters") . "</h2>";
-	$retval["#description"] .= $content;
 
 	//
 	// Top 1-star voters
@@ -125,10 +127,8 @@ function fivestarstats_form_ips($data) {
 		$rows[] = $row;
 	}
 
-	$content = theme("table", $header, $rows);
-
-	$retval["#description"] .= "<h2>" . t("Top 1-star Voters") . "</h2>";
-	$retval["#description"] .= $content;
+	$content["top 1-star"] = "<h2>" . t("Top 1-star Voters") . "</h2>";
+	$content["top 1-star"] .= theme("table", $header, $rows);
 
 	//
 	// Lowest vote average
@@ -145,10 +145,14 @@ function fivestarstats_form_ips($data) {
 		$rows[] = $row;
 	}
 
-	$content = theme("table", $header, $rows);
+	$content["lowest"] = "<h2>" . t("Lowest Vote Average") . "</h2>";
+	$content["lowest"] .= theme("table", $header, $rows);
 
-	$retval["#description"] .= "<h2>" . t("Lowest Vote Average") . "</h2>";
-	$retval["#description"] .= $content;
+	$header = array();
+	$rows = array();
+	$rows[] = array($content["top voters"], $content["top 1-star"]);
+	$rows[] = array(array("data" => $content["lowest"], "colspan" => 2));
+	$retval["#description"] = theme("table", $header, $rows);
 
 	return($retval);
 
@@ -169,6 +173,8 @@ function fivestarstats_form_users($data) {
 		"#description" => "",
 		);
 
+	$content = array();
+
 	//
 	// Top-rated users
 	//
@@ -185,10 +191,8 @@ function fivestarstats_form_users($data) {
 		$rows[] = $row;
 	}
 
-	$content = theme("table", $header, $rows);
-
-	$retval["#description"] .= "<h2>" . t("Top-rated Users") . "</h2>";
-	$retval["#description"] .= $content;
+	$content["top rated"] .= "<h2>" . t("Top-rated Users") . "</h2>";
+	$content["top rated"] .= theme("table", $header, $rows);
 
 	//
 	// Bottom-rated users
@@ -206,10 +210,8 @@ function fivestarstats_form_users($data) {
 		
 	}
 
-	$content = theme("table", $header, $rows);
-
-	$retval["#description"] .= "<h2>" . t("Bottom-rated Users") . "</h2>";
-	$retval["#description"] .= $content;
+	$content["bottom rated"] .= "<h2>" . t("Bottom-rated Users") . "</h2>";
+	$content["bottom rated"] .= theme("table", $header, $rows);
 
 	//
 	// Most 1-star votes received.
@@ -226,10 +228,9 @@ function fivestarstats_form_users($data) {
 		$rows[] = $row;
 	}
 
-	$content = theme("table", $header, $rows);
 
-	$retval["#description"] .= "<h2>" . t("Most 1-star votes received") . "</h2>";
-	$retval["#description"] .= $content;
+	$content["1-star"] .= "<h2>" . t("Most 1-star votes received") . "</h2>";
+	$content["1-star"] .= theme("table", $header, $rows);
 
 	//
 	// Top Posters
@@ -250,10 +251,16 @@ function fivestarstats_form_users($data) {
 		$rows[] = $row;
 	}
 
-	$content = theme("table", $header, $rows);
 
-	$retval["#description"] .= "<h2>" . t("Top posts by # posts/comments") . "</h2>";
-	$retval["#description"] .= $content;
+	$content["top posts"] .= "<h2>" . t("Top posts by # posts/comments") . "</h2>";
+	$content["top posts"] .= theme("table", $header, $rows);
+
+	$header = array();
+	$rows = array();
+	$rows[] = array($content["top rated"], $content["top posts"]);
+	$rows[] = array($content["1-star"], $content["bottom rated"]);
+
+	$retval["#description"] = theme("table", $header, $rows);
 
 	return($retval);
 
