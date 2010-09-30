@@ -98,7 +98,7 @@ function fivestarstats_form_ips($data) {
 	//
 	// Top voters
 	//
-	$header = array(t("IP"), t("Number of Votes Cast"));
+	$header = array(t("IP"), t("# Votes Cast"));
 	
 	$rows = array();
 	foreach ($data["top_voters"] as $key => $value) {
@@ -133,7 +133,7 @@ function fivestarstats_form_ips($data) {
 	//
 	// Lowest vote average
 	//
-	$header = array(t("IP"), t("Number of Votes Cast"), t("Average Vote"));
+	$header = array(t("IP"), t("# Votes Cast"), t("Average Vote"));
 	$rows = array();
 	foreach ($data["lowest_vote_average"] as $key => $value) {
 		$link = l($value["cnt"] . t(" votes"), 
@@ -150,8 +150,7 @@ function fivestarstats_form_ips($data) {
 
 	$header = array();
 	$rows = array();
-	$rows[] = array($content["top voters"], $content["top 1-star"]);
-	$rows[] = array(array("data" => $content["lowest"], "colspan" => 2));
+	$rows[] = array($content["top voters"], $content["top 1-star"], $content["lowest"]);
 	$retval["#description"] = theme("table", $header, $rows);
 
 	return($retval);
