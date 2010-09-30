@@ -38,10 +38,10 @@ function fivestarstats_menu() {
 	//
 	// View all votes cast by a specific IP.
 	//
-	$retval["admin/settings/fivestarstats/ip/%/%"] = array(
+	$retval["admin/settings/fivestarstats/ip/%/votes/%"] = array(
 		"title" => "All votes cast by an IP",
 		"page callback" => "fivestarstats_ip_votes",
-		"page arguments" => array(4, 5),
+		"page arguments" => array(4, 6),
 		"access arguments" => array("administer site configuration"),
 		"type" => MENU_CALLBACK,
 		);
@@ -158,7 +158,7 @@ function fivestarstats_uid($uid) {
 *
 * @param string $ip The IP address
 *
-* @param integer $num_stars The number of star votes to search for.
+* @param mixed $num_stars The number of stars, or "all" for all votes.
 *	This can be useful for finding all 1-star votes to pick up abuses.
 *
 * @return string HTML code.
@@ -177,10 +177,19 @@ function fivestarstats_ip_votes($ip, $num_stars) {
 		"admin/settings/fivestarstats/ip/$ip");
 	drupal_set_breadcrumb($breadcrumb);
 
-	$retval .= t("<h2>Specific votes cast by IP: %ip</h2>", array("%ip" => $ip));
+	if ($num_stars != "all") {
+		$retval .= t("<h2>%num-star votes cast by IP %ip:</h2>", 
+			array("%ip" => $ip, "%num" => $num_stars));
 
-// call fivestarstats_ip_get_votes()
-// call fivestarstats_ip_get_votes_html()
+	} else {
+		$retval .= t("<h2>All votes cast by IP %ip:</h2>", 
+			array("%ip" => $ip));
+
+	}
+
+	include("ip.inc.php");
+	$data = fivestarstats_ip_get_votes_detail($ip, $num_stars);
+	$retval .= fivestarstats_ip_get_votes_detail_html($data);
 
 	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 

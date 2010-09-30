@@ -94,19 +94,31 @@ function fivestarstats_ip_get_votes_html($ip, $data) {
 	$header = array(t("Stars"), t("Number of Votes cast"));
 	$rows = array();
 
+	$num_votes = 0;
 	foreach ($data as $key => $value) {
 		$link = l($value . t(" votes"), 
-			"admin/settings/fivestarstats/ip/$ip/$key");
+			"admin/settings/fivestarstats/ip/$ip/votes/$key");
 		$row = array($key . t(" stars"),
 			array("data" => $link, "align" => "right"),
 			);
 		$rows[]  = $row;
+		$num_votes += $value;
 	}
 
 	if (empty($data)) {
 		$rows[] = array(
 			array("data" => t("No votes found from this IP"), "colspan" => "2")
 			);
+
+	} else {
+		$rows[] = array(
+			t("All Ratings"),
+			array("data" => l(t("!num_votes votes", array("!num_votes" => $num_votes)),
+					"admin/settings/fivestarstats/ip/$ip/votes/all"
+					),
+				"align" => "right"),
+			);
+
 	}
 
 	$retval .= theme("table", $header, $rows);
@@ -163,6 +175,119 @@ function fivestarstats_ip_get_users_html($data) {
 	return($retval);
 
 } // End of fivestarstats_ip_get_users_html()
+
+
+/**
+* Get all votes cast by a specific IP.
+*
+* @param string $ip The IP address
+*
+* @param mixed $num_stars The number of stars, or "all" for all votes.
+*
+* @return array An array of all votes cast, in reverse chronological order.
+*/
+function fivestarstats_ip_get_votes_detail($ip, $num_stars) {
+
+	$retval = array();
+
+	$query = "SELECT "
+		. "votingapi_vote.uid, "
+		. "users.name, "
+		//
+		// Get our NID for nodes and comments.
+		//
+		. "IF(node.nid, node.nid, comments.nid) AS nid, "
+		. "node.title AS node_title, "
+		. "comments.cid, "
+		. "comments.subject AS comment_title, "
+		. "votingapi_vote.value, votingapi_vote.timestamp "
+		. "FROM votingapi_vote "
+		. "LEFT JOIN users ON (users.uid=votingapi_vote.uid) "
+		. "LEFT JOIN node ON (node.nid=votingapi_vote.content_id AND content_type='node') "
+		. "LEFT JOIN comments ON (comments.cid=votingapi_vote.content_id AND content_type='comment') "
+		. "WHERE "
+		. "vote_source='%s' "
+		. "AND content_type IN ('node', 'comment') "
+		. "AND value_type='percent' "
+		;
+	$query_args = array($ip);
+	if ($num_stars != "all") {
+		$query .= "AND value=%d ";
+		$query_args[] = $num_stars * 20;
+	}
+
+	$query .= "ORDER BY votingapi_vote.timestamp DESC ";
+
+	$cursor = db_query($query, $query_args);
+	while ($row = db_fetch_array($cursor)) {
+		$row["timestamp"] = format_date(
+			$row["timestamp"], "custom", "Y-m-d H:h:s a");
+		$row["rating"] = $row["value"] / 20;
+
+		$retval[] = $row;
+	}
+
+	return($retval);
+
+} // End of fivestarstats_ip_get_votes()
+
+
+/**
+* Get HTML to display the votes detail for a specific IP
+*
+* @param array $data Array of votes cast for this IP.
+*
+* @return string HTML code
+*/
+function fivestarstats_ip_get_votes_detail_html($data) {
+
+	$retval = "";
+
+	$header = array(t("Date"), t("Title"), t("Voter"), t("Rating"));
+	$rows = array();
+
+	foreach ($data as $key => $value) {
+
+		$maxlen = 60;
+
+		if (!empty($value["comment_title"])) {
+			$title = $value["comment_title"];
+			$title = truncate_utf8($title, $maxlen);
+			$nid = $value["nid"];
+			$cid = $value["cid"];
+			$options = array("fragment" => "comment-" . $cid);
+			$title = l(t("Comment: ") . $title, 
+				"node/" . $nid, $options);
+
+		} else {
+			$title = $value["node_title"];
+			$title = truncate_utf8($title, $maxlen);
+			$nid = $value["nid"];
+			$title = l($title, "node/" . $nid);
+
+		}
+
+		if (!empty($value["uid"])) {
+			$user = l($value["name"], "user/" . $value["uid"]);
+
+		} else {
+			$user = t("Anonymous");
+
+		}
+
+		$row = array();
+		$row[] = array("data" => $value["timestamp"], "align" => "right");
+		$row[] = $title;
+		$row[] = $user;
+		$row[] = $value["rating"] . t(" stars");
+		$rows[] = $row;
+	}
+
+	$retval .= theme("table", $header, $rows);
+
+	return($retval);
+
+} // End of function fivestarstats_ip_get_votes_detail_html()
 
 
 
