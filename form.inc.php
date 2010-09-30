@@ -166,6 +166,7 @@ function fivestarstats_form_users($data) {
 		"#type" => "fieldset",
 		"#collapsible" => true,
 		"#title" => t("User Activity (votes received)"),
+		"#description" => "",
 		);
 
 	//
@@ -186,12 +187,9 @@ function fivestarstats_form_users($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["top_rated"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Top-rated Users"),
-		"#description" => $content,
-		);
-	
+	$retval["#description"] .= "<h2>" . t("Top-rated Users") . "</h2>";
+	$retval["#description"] .= $content;
+
 	//
 	// Bottom-rated users
 	//
@@ -210,11 +208,8 @@ function fivestarstats_form_users($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["bottom_rated"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Bottom-rated Users"),
-		"#description" => $content,
-		);
+	$retval["#description"] .= "<h2>" . t("Bottom-rated Users") . "</h2>";
+	$retval["#description"] .= $content;
 
 	//
 	// Most 1-star votes received.
@@ -233,12 +228,8 @@ function fivestarstats_form_users($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["most_1_star_votes"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Most 1-star votes received"),
-		"#description" => $content,
-		);
-
+	$retval["#description"] .= "<h2>" . t("Most 1-star votes received") . "</h2>";
+	$retval["#description"] .= $content;
 
 	//
 	// Top Posters
@@ -261,12 +252,11 @@ function fivestarstats_form_users($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["top_posters"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Top posters by # posts/comments"),
-		"#description" => $content,
-		);
+	$retval["#description"] .= "<h2>" . t("Top posts by # posts/comments") . "</h2>";
+	$retval["#description"] .= $content;
 
 	return($retval);
 
 } // End of fivestarstats_form_users()
+
+
