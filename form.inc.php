@@ -80,6 +80,8 @@ function fivestarstats_form_total_votes($data) {
 
 /**
 * Create form elements for top IP addresses.
+*
+* @return array Array of form elements.
 */
 function fivestarstats_form_ips($data) {
 
@@ -87,6 +89,7 @@ function fivestarstats_form_ips($data) {
 		"#type" => "fieldset",
 		"#collapsible" => true,
 		"#title" => t("IP Activity"),
+		"#description" => "",
 		);
 
 	//
@@ -106,11 +109,8 @@ function fivestarstats_form_ips($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["top_voters"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Top Voters"),
-		"#description" => $content,
-		);
+	$retval["#description"] .= "<h2>" . t("Top Voters") . "</h2>";
+	$retval["#description"] .= $content;
 
 	//
 	// Top 1-star voters
@@ -127,11 +127,8 @@ function fivestarstats_form_ips($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["top_1_star_voters"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Top 1-star Voters"),
-		"#description" => $content,
-		);
+	$retval["#description"] .= "<h2>" . t("Top 1-star Voters") . "</h2>";
+	$retval["#description"] .= $content;
 
 	//
 	// Lowest vote average
@@ -150,11 +147,8 @@ function fivestarstats_form_ips($data) {
 
 	$content = theme("table", $header, $rows);
 
-	$retval["lowest_vote_average"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Lowest Vote Average"),
-		"#description" => $content,
-		);
+	$retval["#description"] .= "<h2>" . t("Lowest Vote Average") . "</h2>";
+	$retval["#description"] .= $content;
 
 	return($retval);
 
