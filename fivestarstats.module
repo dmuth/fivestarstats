@@ -56,7 +56,13 @@ function fivestarstats_menu() {
 		"type" => MENU_CALLBACK,
 		);
 
-// fivestarstats/user/$uid/votes/(nstars|all) -> fivestarstats_user()
+	$retval["admin/settings/fivestarstats/uid/%/votes/%"] = array(
+		"title" => "Votes cast on user",
+		"page callback" => "fivestarstats_uid_received_votes_detail",
+		"page arguments" => array(4, 6),
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_CALLBACK,
+		);
 
 	return($retval);
 
@@ -198,13 +204,35 @@ function fivestarstats_uid($uid) {
 	$data = fivestarstats_uid_received_votes($uid);
 	$retval .= fivestarstats_uid_received_votes_html($uid, $data);
 
-// fivestarstats_uid_received_votes_detail($uid, $numstars)
-// fivestarstats_uid_received_votes_detail_data($uid, $numstars)
-// fivestarstats_uid_received_votes_detail_html($data)
+	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 	return($retval);
 
 } // End of fivestarstats_uid()
+
+
+/**
+* Get detail on votes cast on a specific user
+*
+* @param interger $uid The user_id
+*
+* @param mixed $num_stars The number of stars, or "all"
+*
+* @return string HTML code.
+*/
+function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
+
+	$retval = "";
+
+$retval .= "Placeholder. UID: $uid, num_stars: $num_stars";
+// fivestarstats_uid_received_votes_detail_data($uid, $numstars)
+// fivestarstats_uid_received_votes_detail_html($data)
+
+	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+
+	return($retval);
+
+} // End of fivestarstats_uid_received_votes_detail()
 
 
 
