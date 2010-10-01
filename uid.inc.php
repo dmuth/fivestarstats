@@ -67,7 +67,8 @@ function fivestarstats_uid_received_votes_html($uid, $data) {
 	$num_votes = 0;
 	foreach ($data as $key => $value) {
 
-		$link = l($value . t(" votes received"), "fivestarstats/user/$uid/votes/$key");
+		$link = l($value . t(" votes received"), 
+			"admin/settings/fivestarstats/uid/$uid/votes/$key");
 
 		$row = array();
 		$row[] = t("%num stars", array("%num" => $key));
@@ -79,7 +80,7 @@ function fivestarstats_uid_received_votes_html($uid, $data) {
 	$rows[] = array(
 		t("All Votes"),
 		array("data" => l(t("!num_votes votes received", array("!num_votes" => $num_votes)),
-			"admin/settings/fivestarstats/ip/$ip/votes/all"
+			"admin/settings/fivestarstats/uid/$uid/votes/all"
 			),
 			"align" => "right"),
 			);
