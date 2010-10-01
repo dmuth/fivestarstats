@@ -120,7 +120,7 @@ function fivestarstats_form_ips($data) {
 	$rows = array();
 	foreach ($data["top_1_star_voters"] as $key => $value) {
 		$link = l($value . t(" votes"), 
-			"admin/settings/fivestarstats/ip/" . $key . "/votes/1");
+			"admin/settings/fivestarstats/ip/" . $key);
 		$row = array($key, 
 			array("data" => $link, "align" => "right"),
 			);
