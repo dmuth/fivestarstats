@@ -226,6 +226,14 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 
 $retval .= "Placeholder. UID: $uid, num_stars: $num_stars";
 // fivestarstats_uid_received_votes_detail_data($uid, $numstars)
+/*
+Things to fetch:
+	- The post/comment name
+	- The voting user ID/IP
+	- The rating
+	- The voting datestamp
+Borrow query from fivestarstats_ip_get_votes_detail() for this!
+*/
 // fivestarstats_uid_received_votes_detail_html($data)
 
 	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
