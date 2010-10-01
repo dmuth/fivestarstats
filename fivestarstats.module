@@ -189,10 +189,16 @@ function fivestarstats_uid($uid) {
 
 	$retval = "";
 
-// file: uid.inc.php
-// fivestarstats_uid_received_votes($uid) - borrow SQL queries from get_user_stats.inc.php
+	$user = user_load(array("uid" => $uid));
+	$retval .= t("<h2>Votes received by user %user</h2>",
+		array("%user" => $user->name)
+		);
+
+	include("uid.inc.php");
+	$data = fivestarstats_uid_received_votes($uid);
 // fivestarstats_uid_received_votes_html($data)
-	$retval .= "Placeholder for votes cast on UID: $uid";
+
+	$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 // fivestarstats_uid_received_votes_detail($uid, $numstars)
 // fivestarstats_uid_received_votes_detail_data($uid, $numstars)
