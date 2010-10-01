@@ -47,3 +47,48 @@ function fivestarstats_uid_received_votes($uid) {
 } // End of fivestarstats_uid_received_votes()
 
 
+/**
+* Create HTML giving a breakdown of how many votes a specific user received
+* by rating.
+*
+* @param integer $uid The user_id
+*
+* @param array $data The data structure of votes
+*
+* @return string HTML code
+*/
+function fivestarstats_uid_received_votes_html($uid, $data) {
+
+	$retval = "";
+
+	$header = array(t("Stars"), t("Number of votes received"));
+	$rows = array();
+
+	$num_votes = 0;
+	foreach ($data as $key => $value) {
+
+		$link = l($value . t(" votes received"), "fivestarstats/user/$uid/votes/$key");
+
+		$row = array();
+		$row[] = t("%num stars", array("%num" => $key));
+		$row[] = array("data" => $link, "align" => "right");
+		$rows[] = $row;
+		$num_votes += $value;
+	}
+
+	$rows[] = array(
+		t("All Votes"),
+		array("data" => l(t("!num_votes votes received", array("!num_votes" => $num_votes)),
+			"admin/settings/fivestarstats/ip/$ip/votes/all"
+			),
+			"align" => "right"),
+			);
+
+	$retval .= theme("table", $header, $rows);
+
+	return($retval);
+
+} // End of fivestarstats_uid_received_votes_html()
+
+
+

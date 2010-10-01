@@ -196,9 +196,7 @@ function fivestarstats_uid($uid) {
 
 	include("uid.inc.php");
 	$data = fivestarstats_uid_received_votes($uid);
-// fivestarstats_uid_received_votes_html($data)
-
-	$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+	$retval .= fivestarstats_uid_received_votes_html($uid, $data);
 
 // fivestarstats_uid_received_votes_detail($uid, $numstars)
 // fivestarstats_uid_received_votes_detail_data($uid, $numstars)
