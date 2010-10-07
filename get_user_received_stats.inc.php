@@ -13,7 +13,7 @@
 *
 * @return array Associative array of data where the key is the user ID.
 */
-function fivestarstats_get_user_stats($num) {
+function fivestarstats_get_user_received_stats($num) {
 
 	$retval = array();
 
@@ -22,30 +22,30 @@ function fivestarstats_get_user_stats($num) {
 	//
 	$min_votes = 10;
 
-	$retval["top_rated"] = fivestarstats_get_user_stats_top_rated($num, $min_votes);
-	$retval["bottom_rated"] = fivestarstats_get_user_stats_bottom_rated($num, $min_votes);
-	$retval["most_1_star_votes"] = fivestarstats_get_user_stats_most_1_star_votes($num);
+	$retval["top_rated"] = fivestarstats_get_user_received_stats_top_rated($num, $min_votes);
+	$retval["bottom_rated"] = fivestarstats_get_user_received_stats_bottom_rated($num, $min_votes);
+	$retval["most_1_star_votes"] = fivestarstats_get_user_received_stats_most_1_star_votes($num);
 
 	//
 	// Get top posters. Both nodes AND comments.
 	//
-	$retval["top_posters"] = fivestarstats_get_user_stats_top_posters($num);
+	$retval["top_posters"] = fivestarstats_get_user_received_stats_top_posters($num);
 
 	foreach ($retval["top_posters"] as $key => $value) {
 
 		$uid = $value["uid"];
-		$tmp = fivestarstats_get_user_stats_avg_rating($uid);
+		$tmp = fivestarstats_get_user_received_stats_avg_rating($uid);
 		foreach ($tmp as $key2 => $value2) {
 			$retval["top_posters"][$key][$key2] = $value2;
 		}
 
-		$retval["top_posters"][$key]["num_stars"] = fivestarstats_get_user_stats_ratings($uid);
+		$retval["top_posters"][$key]["num_stars"] = fivestarstats_get_user_received_stats_ratings($uid);
 
 	}
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats()
+} // End of fivestarstats_get_user_received_stats()
 
 
 /**
@@ -55,7 +55,7 @@ function fivestarstats_get_user_stats($num) {
 *
 * @return array Associative array of data where the key is the user ID.
 */
-function fivestarstats_get_user_stats_top_posters($num) {
+function fivestarstats_get_user_received_stats_top_posters($num) {
 
 	$retval = array();
 
@@ -84,7 +84,7 @@ function fivestarstats_get_user_stats_top_posters($num) {
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats_top_posters()
+} // End of fivestarstats_get_user_received_stats_top_posters()
 
 
 /**
@@ -94,7 +94,7 @@ function fivestarstats_get_user_stats_top_posters($num) {
 *
 * @return array Associative array of data.
 */
-function fivestarstats_get_user_stats_avg_rating($uid) {
+function fivestarstats_get_user_received_stats_avg_rating($uid) {
 
 	$retval = array();
 
@@ -127,7 +127,7 @@ function fivestarstats_get_user_stats_avg_rating($uid) {
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats_avg_rating()
+} // End of fivestarstats_get_user_received_stats_avg_rating()
 
 
 /**
@@ -137,7 +137,7 @@ function fivestarstats_get_user_stats_avg_rating($uid) {
 *
 * @return array Associative array of data.
 */
-function fivestarstats_get_user_stats_ratings($uid) {
+function fivestarstats_get_user_received_stats_ratings($uid) {
 
 	$retval = array();
 
@@ -179,7 +179,7 @@ function fivestarstats_get_user_stats_ratings($uid) {
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats_avg_rating()
+} // End of fivestarstats_get_user_received_stats_avg_rating()
 
 
 /**
@@ -193,7 +193,7 @@ function fivestarstats_get_user_stats_ratings($uid) {
 *
 * @return array An array of top users.
 */
-function fivestarstats_get_user_stats_top_rated($num, $min_votes) {
+function fivestarstats_get_user_received_stats_top_rated($num, $min_votes) {
 
 	$retval = array();
 
@@ -237,7 +237,7 @@ function fivestarstats_get_user_stats_top_rated($num, $min_votes) {
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats_top_rated()
+} // End of fivestarstats_get_user_received_stats_top_rated()
 
 
 /**
@@ -251,7 +251,7 @@ function fivestarstats_get_user_stats_top_rated($num, $min_votes) {
 *
 * @return array An array of top users.
 */
-function fivestarstats_get_user_stats_bottom_rated($num, $min_votes) {
+function fivestarstats_get_user_received_stats_bottom_rated($num, $min_votes) {
 
 	$retval = array();
 
@@ -295,7 +295,7 @@ function fivestarstats_get_user_stats_bottom_rated($num, $min_votes) {
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats_bottom_rated()
+} // End of fivestarstats_get_user_received_stats_bottom_rated()
 
 
 /**
@@ -304,7 +304,7 @@ function fivestarstats_get_user_stats_bottom_rated($num, $min_votes) {
 *
 * @param integer $num The number of users we want.
 */
-function fivestarstats_get_user_stats_most_1_star_votes($num) {
+function fivestarstats_get_user_received_stats_most_1_star_votes($num) {
 
 	$retval = array();
 
@@ -342,5 +342,5 @@ function fivestarstats_get_user_stats_most_1_star_votes($num) {
 
 	return($retval);
 
-} // End of fivestarstats_get_user_stats_most_1_star_votes()
+} // End of fivestarstats_get_user_received_stats_most_1_star_votes()
 

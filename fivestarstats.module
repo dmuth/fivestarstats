@@ -98,8 +98,8 @@ function fivestarstats_main() {
 	include("get_ips.inc.php");
 	$data["ips"] = fivestarstats_get_ips($num);
 
-	include("get_user_stats.inc.php");
-	$data["users"] = fivestarstats_get_user_stats($num);
+	include("get_user_received_stats.inc.php");
+	$data["users"] = fivestarstats_get_user_received_stats($num);
 
 	include("form.inc.php");
 	$retval .= drupal_get_form("fivestarstats_form", $data);
