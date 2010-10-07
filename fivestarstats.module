@@ -224,19 +224,29 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 
 	$retval = "";
 
+	$user = user_load(array("uid" => $uid));
+
+	//
+	// Since we're two wildcards deep, build breadcrumbs.
+	//
+	$breadcrumb = array();
+	$breadcrumb[] = l(t("Home"), '<front>');
+	$breadcrumb[] = l(t("Admin"), "admin");
+	$breadcrumb[] = l(t("Site Configuration"), "admin/settings");
+	$breadcrumb[] = l(t("Fivestar Stats"), "admin/settings/fivestarstats");
+	$breadcrumb[] = l(t("User: !user", array("!user" => $user->name)), 
+		"admin/settings/fivestarstats/uid/$uid");
+	drupal_set_breadcrumb($breadcrumb);
+
 $retval .= "Placeholder. UID: $uid, num_stars: $num_stars";
+
+	include("uid.inc.php");
+	$data = fivestarstats_uid_received_votes_detail_data($uid, $num_stars);
+	//$retval .= fivestarstats_uid_received_votes_detail_html($uid, $data);
 // fivestarstats_uid_received_votes_detail_data($uid, $numstars)
-/*
-Things to fetch:
-	- The post/comment name
-	- The voting user ID/IP
-	- The rating
-	- The voting datestamp
-Borrow query from fivestarstats_ip_get_votes_detail() for this!
-*/
 // fivestarstats_uid_received_votes_detail_html($data)
 
-	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+	$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 	return($retval);
 

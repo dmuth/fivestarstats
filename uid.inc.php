@@ -92,4 +92,63 @@ function fivestarstats_uid_received_votes_html($uid, $data) {
 } // End of fivestarstats_uid_received_votes_html()
 
 
+/**
+* Fetch details on what user posts received a specific number of stars.
+*
+* @param integer $uid The user_id
+*
+* @param mixed $num_stars The number of stars of votes, or "all" 
+*	for all stars.
+*
+* @return array Array of posts with the specified number of stars received.
+*/
+function fivestarstats_uid_received_votes_detail_data($uid, $num_stars) {
+
+	$retval = array();
+
+	$query = "SELECT "
+		. "votingapi_vote.uid, "
+		. "users.name, "
+		. "votingapi_vote.vote_source, "
+		//
+		// Get our NID for nodes and comments.
+		//
+		. "IF(node.nid, node.nid, comments.nid) AS nid, "
+		. "node.title AS node_title, "
+		. "comments.cid, "
+		. "comments.subject AS comment_title, "
+		. "votingapi_vote.value, votingapi_vote.timestamp "
+		. "FROM votingapi_vote "
+		. "LEFT JOIN users ON (users.uid=votingapi_vote.uid) "
+		. "LEFT JOIN node ON (node.nid=votingapi_vote.content_id AND content_type='node') "
+		. "LEFT JOIN comments ON (comments.cid=votingapi_vote.content_id AND content_type='comment') "
+		. "WHERE "
+		. "("
+			. "(content_type='node' AND content_id IN (SELECT nid FROM node WHERE uid=%d)) "
+			. "OR "
+			. "(content_type='comment' AND content_id IN (SELECT cid FROM comments WHERE uid=%d)) "
+		. ")"
+		. "AND value_type='percent' "
+		;
+	$query_args = array($uid, $uid);
+	if ($num_stars != "all") {
+		$query .= "AND value=%d ";
+		$query_args[] = $num_stars * 20;
+	}
+
+	$query .= "ORDER BY votingapi_vote.timestamp DESC ";
+
+	$cursor = db_query($query, $query_args);
+	while ($row = db_fetch_array($cursor)) {
+		$row["timestamp"] = format_date(
+		$row["timestamp"], "custom", "Y-m-d H:h:s a");
+		$row["rating"] = $row["value"] / 20;
+		$retval[] = $row;
+	}
+
+	return($retval);
+
+} // End of fivestarstats_uid_received_votes_detail_data()
+
+
 
