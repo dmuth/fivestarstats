@@ -200,7 +200,7 @@ function fivestarstats_uid($uid) {
 		array("%user" => $user->name)
 		);
 
-	include("uid.inc.php");
+	include("uid_received.inc.php");
 	$data = fivestarstats_uid_received_votes($uid);
 	$retval .= fivestarstats_uid_received_votes_html($uid, $data);
 
@@ -238,7 +238,7 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 		"admin/settings/fivestarstats/uid/$uid");
 	drupal_set_breadcrumb($breadcrumb);
 
-	include("uid.inc.php");
+	include("uid_received.inc.php");
 	$data = fivestarstats_uid_received_votes_detail_data($uid, $num_stars);
 	$retval .= fivestarstats_uid_received_votes_detail_html($uid, $user, $data);
 
