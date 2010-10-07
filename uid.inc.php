@@ -151,4 +151,70 @@ function fivestarstats_uid_received_votes_detail_data($uid, $num_stars) {
 } // End of fivestarstats_uid_received_votes_detail_data()
 
 
+/**
+* Turn the data structure of votes that a user received into data.
+*
+* @param integer $uid The user_id
+*
+* @param object $user The user object for the user_id
+*
+* @param array $data Our array of vote data
+*
+* @return string HTML code.
+*/
+function fivestarstats_uid_received_votes_detail_html($uid, $user, $data) {
+
+	$retval = "";
+
+	$retval .= t("<h2>Votes cast on user: %user</h2>", 
+		array("%user" => $user->name));
+
+	$header = array(t("Date"), t("Title"), t("Voter"), t("Rating"));
+	$rows = array();
+
+	foreach ($data as $key => $value) {
+
+		$maxlen = 60;
+
+		if (!empty($value["comment_title"])) {
+			$title = $value["comment_title"];
+			$title = truncate_utf8($title, $maxlen);
+			$nid = $value["nid"];
+			$cid = $value["cid"];
+			$options = array("fragment" => "comment-" . $cid);
+			$title = l(t("Comment: ") . $title,
+				"node/" . $nid, $options);
+
+		} else {
+			$title = $value["node_title"];
+			$title = truncate_utf8($title, $maxlen);
+			$nid = $value["nid"];
+			$title = l($title, "node/" . $nid);
+
+		}
+
+		if (!empty($value["uid"])) {
+			$user = l($value["name"], "user/" . $value["uid"]);
+
+		} else {
+			$link = l($value["vote_source"], 
+				"admin/settings/fivestarstats/ip/" . $value["vote_source"]);
+			$user = $link;
+
+		}
+
+		$row = array();
+		$row[] = array("data" => $value["timestamp"], "align" => "right");
+		$row[] = $title;
+		$row[] = $user;
+		$row[] = $value["rating"] . t(" stars");
+		$rows[] = $row;
+
+	}
+
+	$retval .= theme("table", $header, $rows);
+
+	return($retval);
+
+} // End of fivestarstats_uid_received_votes_detail_html()
 

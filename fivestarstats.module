@@ -238,15 +238,11 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 		"admin/settings/fivestarstats/uid/$uid");
 	drupal_set_breadcrumb($breadcrumb);
 
-$retval .= "Placeholder. UID: $uid, num_stars: $num_stars";
-
 	include("uid.inc.php");
 	$data = fivestarstats_uid_received_votes_detail_data($uid, $num_stars);
-	//$retval .= fivestarstats_uid_received_votes_detail_html($uid, $data);
-// fivestarstats_uid_received_votes_detail_data($uid, $numstars)
-// fivestarstats_uid_received_votes_detail_html($data)
+	$retval .= fivestarstats_uid_received_votes_detail_html($uid, $user, $data);
 
-	$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
 
 	return($retval);
 
