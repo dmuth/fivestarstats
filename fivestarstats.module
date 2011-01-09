@@ -6,6 +6,22 @@
 * @author Douglas Muth <http://www.dmuth.org/>
 */
 
+
+//
+// Load our required files.
+//
+include_once("get_total_stats.inc.php");
+include_once("get_ips.inc.php");
+include_once("get_user_received_stats.inc.php");
+include_once("form.inc.php");
+include_once("ip.inc.php");
+include_once("uid_received.inc.php");
+
+/* Testing/Debugging
+$data = fivestarstats_uid_received_summary(2);
+print "<pre>"; print_r($data);
+*/
+
 /**
 * Create our menu.
 */
@@ -92,16 +108,10 @@ function fivestarstats_main() {
 
 	$data = array();
 
-	include("get_total_stats.inc.php");
 	$data["total"] = fivestarstats_get_total_stats();
-
-	include("get_ips.inc.php");
 	$data["ips"] = fivestarstats_get_ips($num);
-
-	include("get_user_received_stats.inc.php");
 	$data["users"] = fivestarstats_get_user_received_stats($num);
 
-	include("form.inc.php");
 	$retval .= drupal_get_form("fivestarstats_form", $data);
 
 	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
@@ -122,7 +132,6 @@ function fivestarstats_ip($ip) {
 
 	$data = array();
 
-	include("ip.inc.php");
 	$data["votes"] = fivestarstats_ip_get_votes($ip);
 	$data["users"] = fivestarstats_ip_get_users($ip);
 	
@@ -173,7 +182,6 @@ function fivestarstats_ip_votes($ip, $num_stars) {
 
 	}
 
-	include("ip.inc.php");
 	$data = fivestarstats_ip_get_votes_detail($ip, $num_stars);
 	$retval .= fivestarstats_ip_get_votes_detail_html($data);
 
@@ -200,7 +208,6 @@ function fivestarstats_uid($uid) {
 		array("%user" => $user->name)
 		);
 
-	include("uid_received.inc.php");
 	$data = fivestarstats_uid_received_votes($uid);
 	$retval .= fivestarstats_uid_received_votes_html($uid, $data);
 
@@ -238,7 +245,6 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 		"admin/settings/fivestarstats/uid/$uid");
 	drupal_set_breadcrumb($breadcrumb);
 
-	include("uid_received.inc.php");
 	$data = fivestarstats_uid_received_votes_detail_data($uid, $num_stars);
 	$retval .= fivestarstats_uid_received_votes_detail_html($uid, $user, $data);
 
