@@ -218,3 +218,40 @@ function fivestarstats_uid_received_votes_detail_html($uid, $user, $data) {
 
 } // End of fivestarstats_uid_received_votes_detail_html()
 
+
+/**
+* Get more of a "summary" view of ratings a user has received.
+*
+* @param integer $uid The user ID
+*
+* @return array An array where the key is the number of stars and
+*	the value is the number of votes.
+*/
+function fivestarstats_uid_received_summary($uid) {
+
+	$retval = array();
+
+	$query = "SELECT COUNT(*) AS cnt, AVG(value) as avg "
+		. "FROM "
+		. "votingapi_vote "
+		. "WHERE "
+		. "value_type='percent' "
+		. "AND "
+			. "("
+			. "(content_type='node' AND content_id IN (SELECT nid FROM node WHERE uid=%d)) "
+			. "OR "
+			. "(content_type='comment' AND content_id IN (SELECT cid FROM comments WHERE uid=%d)) "
+			. ")"
+		. "ORDER BY value DESC "
+		;
+	$query_args = array($uid, $uid);
+	$cursor = db_query($query, $query_args);
+	$row = db_fetch_array($cursor);
+	$retval["num_votes_received"] = $row["cnt"];
+	$retval["avg_rating"] = $row["avg"] / 20;
+
+	return($retval);
+
+} // End of fivestarstats_uid_received_summary()
+
+
