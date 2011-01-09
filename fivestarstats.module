@@ -19,8 +19,10 @@ include_once("uid_received.inc.php");
 
 /* Testing/Debugging
 $data = fivestarstats_uid_received_summary(2);
-print "<pre>"; print_r($data);
+$data = fivestarstats_uid_received_summary_html(2);
+print "<pre>"; print_r($data); print "</pre>";
 */
+
 
 /**
 * Create our menu.
@@ -221,7 +223,7 @@ function fivestarstats_uid($uid) {
 /**
 * Get detail on votes cast on a specific user
 *
-* @param interger $uid The user_id
+* @param integer $uid The user_id
 *
 * @param mixed $num_stars The number of stars, or "all"
 *
@@ -253,6 +255,5 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 	return($retval);
 
 } // End of fivestarstats_uid_received_votes_detail()
-
 
 

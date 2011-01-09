@@ -255,3 +255,47 @@ function fivestarstats_uid_received_summary($uid) {
 } // End of fivestarstats_uid_received_summary()
 
 
+/**
+* Get HTML for votes cast on a specific user.
+*
+* @param integer $uid The user Id
+*
+* @return string HTML code.
+*/
+function fivestarstats_uid_received_summary_html($uid) {
+
+	$retval = "";
+
+	$data = fivestarstats_uid_received_summary($uid);
+	//print_r($data); // Debugging
+
+	$num_votes_received = $data["num_votes_received"];
+	$num_stars_received = sprintf("%.1f", $data["avg_rating"]);
+	$rating = $num_stars_received * 20;
+
+	//
+	// Get our stars with the proper rating filled in.
+	//
+	$star_display = theme("fivestar_static", $rating);
+
+	//
+	// Include details on ratings.
+	//
+	$title = t("On posts and comments");
+	$text_display = t("Average: !num_stars_received (!num_votes_received votes)",
+		array(
+			"!num_stars_received" => $num_stars_received,
+			"!num_votes_received" => $num_votes_received,
+			)
+		);
+
+	//
+	// Theme it all together!
+	//
+	$retval .= theme('fivestar_static_element', $star_display, $title, $text_display);
+
+	return($retval);
+
+} // End of fivestar_stats_uid_received_summary_html()
+
+
