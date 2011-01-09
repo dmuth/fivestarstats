@@ -19,7 +19,7 @@ include_once("uid_received.inc.php");
 
 /* Testing/Debugging
 $data = fivestarstats_uid_received_summary(2);
-$data = fivestarstats_uid_received_summary_html(2);
+$data = fivestarstats_uid_received_summary_html(2, true);
 print "<pre>"; print_r($data); print "</pre>";
 */
 

@@ -260,9 +260,12 @@ function fivestarstats_uid_received_summary($uid) {
 *
 * @param integer $uid The user Id
 *
+* @param boolean $light "Light mode". Display less text. Suitable for use in
+*	forum posts and comments.
+*
 * @return string HTML code.
 */
-function fivestarstats_uid_received_summary_html($uid) {
+function fivestarstats_uid_received_summary_html($uid, $light = false) {
 
 	$retval = "";
 
@@ -282,12 +285,26 @@ function fivestarstats_uid_received_summary_html($uid) {
 	// Include details on ratings.
 	//
 	$title = t("On posts and comments");
+	if ($light) {
+		$title = "";
+	}
+
 	$text_display = t("Average: !num_stars_received (!num_votes_received votes)",
 		array(
 			"!num_stars_received" => $num_stars_received,
 			"!num_votes_received" => $num_votes_received,
 			)
 		);
+
+	if ($light) {
+	$text_display = t("!num_votes_received votes received",
+		array(
+			"!num_votes_received" => $num_votes_received,
+			)
+		);
+
+
+	}
 
 	//
 	// Theme it all together!
