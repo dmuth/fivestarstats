@@ -123,7 +123,14 @@ function fivestarstats_get_user_received_stats_avg_rating($uid) {
 
 	$retval["num_votes"] = $row["cnt"];
 	$retval["total"] = $row["total"];
-	$retval["average"] = $row["total"] / $row["cnt"] / 20;
+
+	//
+	// Only calculate an averageif we have 1 or more votes.
+	//
+	$retval["average"] = 0;
+	if ($row["cnt"]) {
+		$retval["average"] = $row["total"] / $row["cnt"] / 20;
+	}
 
 	return($retval);
 
