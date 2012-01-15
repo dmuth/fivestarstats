@@ -10,6 +10,7 @@
 //
 // Load our required files.
 //
+include_once("about.inc.php");
 include_once("get_total_stats.inc.php");
 include_once("get_ips.inc.php");
 include_once("get_user_received_stats.inc.php");
@@ -32,19 +33,28 @@ print "<pre>"; print_r($data); print "</pre>";
 */
 function fivestarstats_main($arg, $arg2, $arg3, $arg4) {
 
+	//fivestarstats_debug("$arg, $arg2, $arg3, $arg4"); // Debugging
 	$retval = "";
 
-	$num = 5;
+	if ($arg == "about") {
+		$retval = fivestarstats_about();
 
-	$data = array();
+	} else {
+		//
+		// Default action. Load the main screen.
+		//
+		$num = 5;
 
-	$data["total"] = fivestarstats_get_total_stats();
-	$data["ips"] = fivestarstats_get_ips($num);
-	$data["users"] = fivestarstats_get_user_received_stats($num);
+		$data = array();
 
-	$retval .= drupal_get_form("fivestarstats_form", $data);
+		$data["total"] = fivestarstats_get_total_stats();
+		$data["ips"] = fivestarstats_get_ips($num);
+		$data["users"] = fivestarstats_get_user_received_stats($num);
 
-	//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+		$retval .= drupal_get_form("fivestarstats_form", $data);
+		//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+
+	}
 
 	return($retval);
 

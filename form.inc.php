@@ -19,27 +19,6 @@ function fivestarstats_form($form_data, $data) {
 
 	$retval = array();
 
-	//
-	// Blurb at the top of the page with module info.
-	//
-	$content = "";
-	$dirname = drupal_get_filename("module", "fivestarstats");
-	$filename = dirname($dirname) . "/README.txt";
-	$content .= t("The module README !link", 
-		array("!link" => l(t("can be read here"), $filename))) 
-		. ".<br/>";
-	$content .= t("The latest version of this module can be downloaded from: !link.<br/>",
-		array("!link" => l("http://github.com/dmuth/fivestarstats", 
-			"http://github.com/dmuth/fivestarstats")));
-
-	$retval["info"] = array(
-		"#type" => "fieldset",
-		"#collapsible" => true,
-		"#collapsed" => true,
-		"#title" => t("Module Info"),
-		"#description" => $content,
-		);
-
 	$retval["total_votes"] = fivestarstats_form_total_votes($data["total"]);
 	$retval["ips"] = fivestarstats_form_ips($data["ips"]);
 	$retval["users"] = fivestarstats_form_users($data["users"]);
@@ -60,7 +39,6 @@ function fivestarstats_form_total_votes($data) {
 
 	$retval = array(
 		"#type" => "fieldset",
-		"#collapsible" => true,
 		"#title" => t("Total Votes"),
 		);
 
@@ -88,7 +66,6 @@ function fivestarstats_form_ips($data) {
 
 	$retval = array(
 		"#type" => "fieldset",
-		"#collapsible" => true,
 		"#title" => t("IP Activity"),
 		"#description" => "",
 		);
@@ -167,7 +144,6 @@ function fivestarstats_form_users($data) {
 
 	$retval = array(
 		"#type" => "fieldset",
-		"#collapsible" => true,
 		"#title" => t("User Activity (votes received)"),
 		"#description" => "",
 		);
