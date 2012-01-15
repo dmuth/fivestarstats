@@ -27,7 +27,17 @@ function fivestarstats_about() {
 
 	fclose($fp);
 
-	$retval .= "<pre>" . $info . "</pre>";
+	//
+	// The README is in Markdown format, so filter it, then put it in code tags.
+	// The style element is because the default code font size in Drupal is 
+	// way too small.
+	//
+	$info = check_markup($info);
+
+	$retval = "<code style=\"font-size: medium; \" >" 
+		. $info 
+		. "</code>"
+		;
 
 	return($retval);
 
