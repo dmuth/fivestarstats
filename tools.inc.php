@@ -154,11 +154,13 @@ function fivestarstats_tools_form_submit($form, $form_state) {
 	$time_diff_query = $time_query - $time_start;
 	$message = sprintf("Query made in %.3f seconds", $time_diff_query);
 	drupal_set_message($message);
+	watchdog("fivestarstats", $message, "", WATCHDOG_NOTICE);
 
 	$time_diff_update = $time_done - $time_query;
 	$message = sprintf("%d items updated in %.3f seconds", $num, 
 		$time_diff_update);
 	drupal_set_message($message);
+	watchdog("fivestarstats", $message, "", WATCHDOG_NOTICE);
 
 } // End of fivestarstats_tools_form_submit()
 
