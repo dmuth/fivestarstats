@@ -44,13 +44,22 @@ function fivestarstats_menu() {
 		"weight" => 0,
 		);
 
+	$retval["admin/settings/fivestarstats/tools"] = array(
+		"title" => "Tools",
+		"page callback" => "fivestarstats_main",
+		"page arguments" => array(3, 4, 5, 6),
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_LOCAL_TASK,
+		"weight" => 1,
+		);
+
 	$retval["admin/settings/fivestarstats/about"] = array(
 		"title" => "About",
 		"page callback" => "fivestarstats_main",
 		"page arguments" => array(3, 4, 5, 6),
 		"access arguments" => array("administer site configuration"),
 		"type" => MENU_LOCAL_TASK,
-		"weight" => 1,
+		"weight" => 2,
 		);
 
 	//

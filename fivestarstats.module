@@ -17,7 +17,9 @@ include_once("get_user_received_stats.inc.php");
 include_once("form.inc.php");
 include_once("ip.inc.php");
 include_once("menu.inc.php");
+include_once("tools.inc.php");
 include_once("uid_received.inc.php");
+
 
 /* Testing/Debugging
 $data = fivestarstats_uid_received_summary(2);
@@ -37,7 +39,10 @@ function fivestarstats_main($arg, $arg2, $arg3, $arg4) {
 	$retval = "";
 
 	if ($arg == "about") {
-		$retval = fivestarstats_about();
+		$retval .= fivestarstats_about();
+
+	} else if ($arg == "tools") {
+		$retval .= fivestarstats_tools();
 
 	} else {
 		//
