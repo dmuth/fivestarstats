@@ -15,6 +15,7 @@ include_once("get_ips.inc.php");
 include_once("get_user_received_stats.inc.php");
 include_once("form.inc.php");
 include_once("ip.inc.php");
+include_once("menu.inc.php");
 include_once("uid_received.inc.php");
 
 /* Testing/Debugging
@@ -25,84 +26,11 @@ print "<pre>"; print_r($data); print "</pre>";
 
 
 /**
-* Create our menu.
-*/
-function fivestarstats_menu() {
-
-	$retval = array();
-
-	//
-	// Our main menu item.
-	//
-	$retval["admin/settings/fivestarstats"] = array(
-		"title" => "Fivestar Stats",
-		"page callback" => "fivestarstats_main",
-		"access arguments" => array("administer site configuration"),
-		"type" => MENU_NORMAL_ITEM,
-		);
-
-	//
-	// View voting history of a specific IP
-	//
-	$retval["admin/settings/fivestarstats/ip/%"] = array(
-		"title" => "IP Voting Activity",
-		"page callback" => "fivestarstats_ip",
-		"page arguments" => array(4),
-		"access arguments" => array("administer site configuration"),
-		"type" => MENU_CALLBACK,
-		);
-
-	//
-	// View all votes cast by a specific IP.
-	//
-	$retval["admin/settings/fivestarstats/ip/%/votes/%"] = array(
-		"title" => "All votes cast by an IP",
-		"page callback" => "fivestarstats_ip_votes",
-		"page arguments" => array(4, 6),
-		"access arguments" => array("administer site configuration"),
-		"type" => MENU_CALLBACK,
-		);
-
-	//
-	// View votes cast on a specific user.
-	//
-	$retval["admin/settings/fivestarstats/uid/%"] = array(
-		"title" => "Votes cast on user",
-		"page callback" => "fivestarstats_uid",
-		"page arguments" => array(4),
-		"access arguments" => array("administer site configuration"),
-		"type" => MENU_CALLBACK,
-		);
-
-	$retval["admin/settings/fivestarstats/uid/%/votes/%"] = array(
-		"title" => "Votes cast on user",
-		"page callback" => "fivestarstats_uid_received_votes_detail",
-		"page arguments" => array(4, 6),
-		"access arguments" => array("administer site configuration"),
-		"type" => MENU_CALLBACK,
-		);
-
-	return($retval);
-
-} // End of fivestarstats_menu()
-
-
-/**
-* Our permissions function.
-* For now, we'll leave this empty.
-*/
-function fivestarstats_perm() {
-	$retval = array();
-	return($retval);
-}
-
-
-/**
 * Our main function.  It returns the various reports.
 *
 * @return string The content of the page
 */
-function fivestarstats_main() {
+function fivestarstats_main($arg, $arg2, $arg3, $arg4) {
 
 	$retval = "";
 
@@ -255,5 +183,22 @@ function fivestarstats_uid_received_votes_detail($uid, $num_stars) {
 	return($retval);
 
 } // End of fivestarstats_uid_received_votes_detail()
+
+
+/**
+* Our main debug function.
+*
+* @param string $message
+*/
+function fivestarstats_debug($message) {
+
+	if (is_array($message)) {
+		$message = "<pre>" . print_r($message, true) . "</pre>";
+	}
+
+	drupal_set_message("Fivestarstats Debug: " . $message);
+
+} // End of fivestar_stats_debug()
+
 
 
