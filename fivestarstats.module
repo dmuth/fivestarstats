@@ -17,6 +17,7 @@ include_once("get_user_received_stats.inc.php");
 include_once("form.inc.php");
 include_once("ip.inc.php");
 include_once("menu.inc.php");
+include_once("recent/main.inc.php");
 include_once("tools.inc.php");
 include_once("uid_received.inc.php");
 
@@ -40,6 +41,9 @@ function fivestarstats_main($arg, $arg2, $arg3, $arg4) {
 
 	if ($arg == "about") {
 		$retval .= fivestarstats_about();
+
+	} else if ($arg == "recent") {
+		$retval .= fivestarstats_recent();
 
 	} else if ($arg == "tools") {
 		$retval .= fivestarstats_tools();

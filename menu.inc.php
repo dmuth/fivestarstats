@@ -36,12 +36,21 @@ function fivestarstats_menu() {
 		);
 
 	$retval["admin/settings/fivestarstats/main"] = array(
-		"title" => "Fivestar Stats",
+		"title" => "Voting Stats",
 		"page callback" => "fivestarstats_main",
 		"page arguments" => array(3, 4, 5, 6),
 		"access arguments" => array("administer site configuration"),
 		"type" => MENU_DEFAULT_LOCAL_TASK,
 		"weight" => 0,
+		);
+
+	$retval["admin/settings/fivestarstats/recent"] = array(
+		"title" => "Recent Votes",
+		"page callback" => "fivestarstats_main",
+		"page arguments" => array(3, 4, 5, 6),
+		"access arguments" => array("administer site configuration"),
+		"type" => MENU_LOCAL_TASK,
+		"weight" => 1,
 		);
 
 	$retval["admin/settings/fivestarstats/tools"] = array(
