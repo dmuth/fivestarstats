@@ -18,11 +18,6 @@ function fivestarstats_recent() {
 
 	$retval = fivestarstats_recent_get_html($votes);
 	//fivestarstats_debug($retval); // Debugging
-	
-/**
-TODO:
-- Add paging
-*/
 
 	return($retval);
 
@@ -38,7 +33,7 @@ function fivestarstats_recent_votes() {
 
 	$retval = array();
 
-	$num = 5;
+	$num = 20;
 	$query = "SELECT "
 		. "votes.timestamp, "
 		. "votes.vote_source, "
@@ -57,10 +52,9 @@ function fivestarstats_recent_votes() {
 		. "(content_type='node' OR content_type='comment') "
 		. "AND value_type='percent' "
 		. "ORDER BY vote_id DESC "
-		. "LIMIT $num "
 		;
 
-	$cursor = db_query($query);
+	$cursor = pager_query($query, $num);
 	while ($row = db_fetch_array($cursor)) {
 		$retval[] = $row;
 	}
@@ -131,7 +125,12 @@ function fivestarstats_recent_get_html($data) {
 
 	}
 
+
+	$pager = theme("pager");
+
+	$retval .= $pager;
 	$retval .= theme("table", $header, $rows);
+	$retval .= $pager;
 
 	return($retval);
 
