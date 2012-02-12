@@ -221,7 +221,7 @@ function fivestarstats_ip_get_votes_detail($ip, $num_stars) {
 	$cursor = db_query($query, $query_args);
 	while ($row = db_fetch_array($cursor)) {
 		$row["timestamp"] = format_date(
-			$row["timestamp"], "custom", "Y-m-d H:h:s a");
+			$row["timestamp"], "custom", "Y-m-d H:i:s a");
 		$row["rating"] = $row["value"] / 20;
 
 		$retval[] = $row;
