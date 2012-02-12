@@ -81,7 +81,7 @@ function fivestarstats_recent_get_html($data) {
 
     foreach ($data as $key => $value) {
 
-		$value["timestamp"] = format_date(
+		$date_string = format_date(
 			$value["timestamp"], "custom", "Y-m-d H:i:s a");
 		$value["rating"] = $value["value"] / 20;
 
@@ -116,7 +116,9 @@ function fivestarstats_recent_get_html($data) {
 		$ip_string = l($ip, "admin/settings/fivestarstats/ip/" . $ip);
 
 		$row = array();
-		$row[] = array("data" => $value["timestamp"], "align" => "right");
+		$row[] = array("data" => $date_string, "align" => "right",
+			"style" => "white-space: nowrap; ",
+			);
 		$row[] = $title;
 		$row[] = $user;
 		$row[] = $ip_string;
