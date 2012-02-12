@@ -44,7 +44,7 @@ function fivestarstats_menu() {
 		"weight" => -1,
 		);
 
-	$retval["admin/settings/fivestarstats/main"] = array(
+	$retval["admin/settings/fivestarstats/stats"] = array(
 		"title" => "Voting Stats",
 		"page callback" => "fivestarstats_main",
 		"page arguments" => array(3, 4, 5, 6),

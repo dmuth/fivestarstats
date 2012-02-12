@@ -48,7 +48,7 @@ function fivestarstats_main($arg, $arg2, $arg3, $arg4) {
 	} else if ($arg == "tools") {
 		$retval .= fivestarstats_tools();
 
-	} else {
+	} else if ($arg == "stats") {
 		//
 		// Default action. Load the main screen.
 		//
@@ -62,6 +62,12 @@ function fivestarstats_main($arg, $arg2, $arg3, $arg4) {
 
 		$retval .= drupal_get_form("fivestarstats_form", $data);
 		//$retval .= "<pre>" . print_r($data, true) . "</pre>"; // Debugging
+
+	} else {
+		//
+		// Default to recent votes.
+		//
+		$retval .= fivestarstats_recent();
 
 	}
 
